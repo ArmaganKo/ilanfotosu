@@ -192,7 +192,7 @@ footer a{color:var(--yesil-koyu)}
       <button id="m-bulanik">Bulanıklaştır</button>
       <button id="b-yuz" class="sade">Yüzleri bul</button>
       <button id="b-plaka" class="sade">Plakaları bul</button>
-      <button id="b-geri" class="sade">Son lekeyi sil</button>
+      <button id="b-geri" class="sade">Geri al</button>
       <button id="b-hepsi" class="sade">Ayarı hepsine uygula</button>
     </div>
     <p class="ipuc" id="ipuc">Parmağınızı sürükleyerek kadrajı kaydırın. Bulanıklaştırmak için önce "Bulanıklaştır" düğmesine basın.</p>
@@ -202,7 +202,7 @@ footer a{color:var(--yesil-koyu)}
 <div class="adim gizli" id="a-indir">
   <div class="adim-bas"><div class="adim-no">4</div><h2>İndirin</h2></div>
   <button class="ana" id="b-indir">Hepsini zip olarak indir</button>
-  <button class="ana gizli" id="b-telefon" style="background:#fff;color:var(--yesil-koyu)">Telefona kaydet</button>
+  <button class="ana" id="b-telefon" style="background:#fff;color:var(--yesil-koyu)">Fotoğrafları tek tek indir</button>
   <div id="durum"></div>
   <div id="bitti" class="gizli">
     <b>Fotoğraflar hazır.</b>
@@ -216,11 +216,11 @@ footer a{color:var(--yesil-koyu)}
 <details>
   <summary>Nasıl kullanılır?</summary>
   <ol>
-    <li>1. adımda fotoğrafları ekleyin. Şeritteki küçük görsellere dokunarak aralarında geçiş yapar, basılı tutup sürükleyerek sıralarını değiştirirsiniz. Baştaki fotoğraf kapak olur; dosya adlarındaki numaralar da bu sıraya göre verilir.</li>
-    <li>2. adımda oranı seçin. Portallar yatay fotoğrafı sever; 4:3 çoğu ilan sitesinde kırpılmadan görünür.</li>
-    <li>3. adımda kadrajı parmağınızla kaydırın, gerekirse yakınlaştırın. Oda loşsa aydınlık çubuğunu biraz sağa çekin. "Bulanıklaştır" moduna geçip yüzün ya da plakanın üstünden geçin.</li>
+    <li>Fotoğrafları ekleyin. Şeritteki küçük görsellere dokunarak aralarında geçiş yapar, basılı tutup sürükleyerek sıralarını değiştirirsiniz. Baştaki fotoğraf kapak olur; dosya adlarındaki numaralar da bu sıraya göre verilir.</li>
+    <li>Oranı seçin. Portallar yatay fotoğrafı sever; 4:3 çoğu ilan sitesinde kırpılmadan görünür.</li>
+    <li>Kadrajı parmağınızla kaydırın, gerekirse yakınlaştırın. Oda loşsa aydınlık çubuğunu biraz sağa çekin. "Bulanıklaştır" moduna geçip yüzün ya da plakanın üstünden geçin.</li>
     <li>Aynı evin fotoğrafları benzer çekildiği için bir tanesinin kadrajını ve aydınlığını ayarlayıp "Ayarı hepsine uygula" demek çoğu zaman yeterli olur.</li>
-    <li>4. adımda hepsini tek zip dosyası olarak indirin ya da telefonunuza doğrudan kaydedin.</li>
+    <li>Hepsini tek zip dosyası olarak indirin ya da fotoğrafları tek tek indirin.</li>
   </ol>
   <p>Hiçbir fotoğraf sunucuya yüklenmez. Tüm işlem kendi tarayıcınızda yapılır, sayfayı kapattığınızda hiçbir iz kalmaz.</p>
 </details>
@@ -246,7 +246,7 @@ footer a{color:var(--yesil-koyu)}
   "Bulanıklaştır" modunda ise parmağınızı gezdirdiğiniz her yer bulanıklaşır.</p>
   <p>Otomatik aramaların ikisi de kesin sonuç vermez; kaçırabilir, fazladan yer de
   işaretleyebilir. Bu yüzden işaretlenen yerleri gözden geçirin, gereksizini
-  "Son lekeyi sil" ile kaldırın, atlananı elle kapatın. Plaka kapatma ve yüz sansürleme
+  "Geri al" ile kaldırın, atlananı elle kapatın. Plaka kapatma ve yüz sansürleme
   işinde son karar her zaman sizde olmalı.</p>
 </details>
 
@@ -351,7 +351,6 @@ async function ekle(list){
     if(aktif < 0) aktif = 0;
     $('a-duzen').classList.remove('gizli');
     $('a-indir').classList.remove('gizli');
-    if(navigator.canShare) $('b-telefon').classList.remove('gizli');
     seritCiz(); ciz(); ayarlariYukle();
   }
 }
@@ -499,14 +498,14 @@ tuval.addEventListener('pointerdown', e => {
   if(aktif<0) return;
   basili = true; tuval.setPointerCapture(e.pointerId);
   const p = nokta(e); sonX = p.x; sonY = p.y;
-  if(mod === 'bulanik') leke(p);
+  if(mod === 'bulanik'){ yeniGrup(foto[aktif]); leke(p); }
 });
 tuval.addEventListener('pointermove', e => {
   if(!basili || aktif<0) return;
   const p = nokta(e), f = foto[aktif];
   if(mod === 'bulanik'){ leke(p); }
   else {
-    f.cx -= (p.x - sonX); f.cy -= (p.y - sonY);
+    f.cx += (p.x - sonX); f.cy += (p.y - sonY);
     const k = kadraj(f);
     f.cx = k.x + k.w/2; f.cy = k.y + k.h/2;
   }
@@ -520,9 +519,19 @@ function nokta(e){
   const r = tuval.getBoundingClientRect();
   return { x:(e.clientX-r.left)/olcek * (tuval.width/r.width), y:(e.clientY-r.top)/olcek * (tuval.height/r.height) };
 }
+function yeniGrup(f){
+  f.sonGrup = (f.sonGrup || 0) + 1;
+  return f.sonGrup;
+}
 function leke(p){
   const f = foto[aktif];
-  f.lekeler.push({ t:'c', x:p.x, y:p.y, r:Math.max(f.bit.width, f.bit.height)*0.035 });
+  const r = Math.max(f.bit.width, f.bit.height)*0.035;
+  const s = f.lekeler[f.lekeler.length-1];
+  if(s && s.t === 'c' && s.g === f.sonGrup){
+    const d = Math.hypot(p.x - s.x, p.y - s.y);
+    if(d < r*0.4) return;
+  }
+  f.lekeler.push({ t:'c', g:f.sonGrup, x:p.x, y:p.y, r });
 }
 
 $('m-kadraj').addEventListener('click', () => setMod('kadraj'));
@@ -537,7 +546,11 @@ function setMod(m){
 }
 $('b-geri').addEventListener('click', () => {
   if(aktif<0) return;
-  foto[aktif].lekeler.pop(); ciz(); seritCiz();
+  const f = foto[aktif];
+  if(!f.lekeler.length) return;
+  const son = f.lekeler[f.lekeler.length-1].g;
+  while(f.lekeler.length && f.lekeler[f.lekeler.length-1].g === son) f.lekeler.pop();
+  ciz(); seritCiz();
 });
 
 /* ---------- ayarı hepsine uygula ---------- */
@@ -578,7 +591,7 @@ $('b-yuz').addEventListener('click', async () => {
     bulunan.forEach(d => {
       const bb = d.boundingBox;
       const pay = Math.max(bb.width, bb.height) * 0.25;
-      f.lekeler.push({ t:'r', x:bb.originX-pay, y:bb.originY-pay, w:bb.width+pay*2, h:bb.height+pay*2 });
+      f.lekeler.push({ t:'r', g:yeniGrup(f), x:bb.originX-pay, y:bb.originY-pay, w:bb.width+pay*2, h:bb.height+pay*2 });
     });
     ciz(); seritCiz();
     b.textContent = bulunan.length ? bulunan.length + ' yüz bulundu' : 'Yüz bulunamadı';
@@ -592,7 +605,7 @@ $('b-yuz').addEventListener('click', async () => {
 
 /* ---------- otomatik plaka ---------- */
 function plakaAday(bit){
-  const en = 720;
+  const en = 800;
   const s = Math.min(1, en / bit.width);
   const W = Math.round(bit.width*s), H = Math.round(bit.height*s);
   const c = document.createElement('canvas'); c.width = W; c.height = H;
@@ -601,66 +614,93 @@ function plakaAday(bit){
   const d = g.getImageData(0, 0, W, H).data;
 
   const N = W*H;
-  const gri = new Uint8Array(N), parlak = new Uint8Array(N), mavi = new Uint8Array(N);
+  const gri = new Uint8Array(N), doygunluk = new Uint8Array(N), mavi = new Uint8Array(N);
   for(let i=0, p=0; p<N; i+=4, p++){
     const r=d[i], y2=d[i+1], b=d[i+2];
-    const y = (r*0.299 + y2*0.587 + b*0.114) | 0;
-    gri[p] = y;
+    gri[p] = (r*0.299 + y2*0.587 + b*0.114) | 0;
     const mx = Math.max(r,y2,b), mn = Math.min(r,y2,b);
-    parlak[p] = (y > 162 && mx-mn < 60) ? 1 : 0;
-    mavi[p]   = (b > 70 && b-r > 38 && b-y2 > 20) ? 1 : 0;
+    doygunluk[p] = mx - mn;
+    mavi[p] = (b > 60 && b-r > 30 && b-y2 > 15) ? 1 : 0;
   }
 
-  const etiket = new Int32Array(N).fill(-1);
+  const etiket = new Int32Array(N);
   const yigin = new Int32Array(N);
-  const kutular = [];
-  for(let p=0; p<N; p++){
-    if(!parlak[p] || etiket[p] >= 0) continue;
-    const id = kutular.length;
-    let n = 0; yigin[n++] = p; etiket[p] = id;
-    let x0 = p%W, x1 = x0, y0 = (p/W)|0, y1 = y0, adet = 0;
-    while(n > 0){
-      const q = yigin[--n]; adet++;
-      const qx = q%W, qy = (q/W)|0;
-      if(qx<x0) x0=qx; if(qx>x1) x1=qx;
-      if(qy<y0) y0=qy; if(qy>y1) y1=qy;
-      if(qx>0   && parlak[q-1] && etiket[q-1]<0){ etiket[q-1]=id; yigin[n++]=q-1; }
-      if(qx<W-1 && parlak[q+1] && etiket[q+1]<0){ etiket[q+1]=id; yigin[n++]=q+1; }
-      if(qy>0   && parlak[q-W] && etiket[q-W]<0){ etiket[q-W]=id; yigin[n++]=q-W; }
-      if(qy<H-1 && parlak[q+W] && etiket[q+W]<0){ etiket[q+W]=id; yigin[n++]=q+W; }
-    }
-    kutular.push({x0,y0,x1,y1,adet});
-  }
+  const parlak = new Uint8Array(N);
+  const hepsi = [];
 
-  const sonuc = [];
-  for(const k of kutular){
-    const w = k.x1-k.x0+1, h = k.y1-k.y0+1;
-    if(h < 9 || w < 26 || w > W*0.5) continue;
-    const ar = w/h;
-    if(ar < 2.2 || ar > 6.5) continue;
-    if(k.adet/(w*h) < 0.32) continue;
-
-    let kenar = 0, say = 0;
-    for(let y=k.y0+1; y<k.y1; y++){
-      for(let x=k.x0+1; x<k.x1; x++){
-        const p = y*W+x;
-        if(Math.abs(gri[p]-gri[p-1]) > 45) kenar++;
-        say++;
+  // Farkli parlaklik esikleriyle birden fazla tarama: golgeli ve acili plakalar
+  // tek esikte kaciyor, bu yuzden dort gecis yapip sonuclari birlestiriyoruz.
+  const esikler = [205, 178, 152, 128];
+  for(let e=0; e<esikler.length; e++){
+    const esik = esikler[e];
+    const dogSiniri = esik < 160 ? 85 : 70;
+    for(let p=0; p<N; p++) parlak[p] = (gri[p] > esik && doygunluk[p] < dogSiniri) ? 1 : 0;
+    etiket.fill(-1);
+    let id = 0;
+    for(let p0=0; p0<N; p0++){
+      if(!parlak[p0] || etiket[p0] >= 0) continue;
+      let n = 0; yigin[n++] = p0; etiket[p0] = id;
+      let x0 = p0%W, x1 = x0, y0 = (p0/W)|0, y1 = y0, adet = 0;
+      while(n > 0){
+        const q = yigin[--n]; adet++;
+        const qx = q%W, qy = (q/W)|0;
+        if(qx<x0) x0=qx; if(qx>x1) x1=qx;
+        if(qy<y0) y0=qy; if(qy>y1) y1=qy;
+        if(qx>0   && parlak[q-1] && etiket[q-1]<0){ etiket[q-1]=id; yigin[n++]=q-1; }
+        if(qx<W-1 && parlak[q+1] && etiket[q+1]<0){ etiket[q+1]=id; yigin[n++]=q+1; }
+        if(qy>0   && parlak[q-W] && etiket[q-W]<0){ etiket[q-W]=id; yigin[n++]=q-W; }
+        if(qy<H-1 && parlak[q+W] && etiket[q+W]<0){ etiket[q+W]=id; yigin[n++]=q+W; }
       }
+      id++;
+
+      const w = x1-x0+1, h = y1-y0+1;
+      if(h < 7 || w < 18 || w > W*0.62) continue;
+      const ar = w/h;
+      if(ar < 1.7 || ar > 8) continue;
+      if(adet/(w*h) < 0.2) continue;
+
+      let kenar = 0, say = 0;
+      for(let y=y0+1; y<y1; y++){
+        for(let x=x0+1; x<x1; x++){
+          const p = y*W+x;
+          if(Math.abs(gri[p]-gri[p-1]) > 32) kenar++;
+          say++;
+        }
+      }
+      if(!say) continue;
+      const yogunluk = kenar/say;
+      if(yogunluk < 0.045) continue;
+
+      let m = 0, mt = 0;
+      const bant = Math.max(1, Math.round(w*0.16));
+      for(let y=y0; y<=y1; y++)
+        for(let x=x0; x<x0+bant; x++){ m += mavi[y*W+x]; mt++; }
+      const maviOran = mt ? m/mt : 0;
+
+      // 4.5:1 civari Turk plakasi oranina yakinlik puani
+      const oranPuani = 1 - Math.min(1, Math.abs(ar-4.5)/3.5);
+
+      hepsi.push({
+        x:x0/s, y:y0/s, w:w/s, h:h/s,
+        puan: yogunluk*2 + oranPuani*0.6 + (maviOran > 0.12 ? 0.8 : 0)
+      });
     }
-    if(!say) continue;
-    const yogunluk = kenar/say;
-    if(yogunluk < 0.08) continue;
-
-    let m = 0, mt = 0;
-    const bant = Math.max(1, Math.round(w*0.14));
-    for(let y=k.y0; y<=k.y1; y++)
-      for(let x=k.x0; x<k.x0+bant; x++){ m += mavi[y*W+x]; mt++; }
-
-    sonuc.push({ x:k.x0/s, y:k.y0/s, w:w/s, h:h/s, puan: yogunluk + ((mt && m/mt > 0.15) ? 0.5 : 0) });
   }
-  sonuc.sort((a,b) => b.puan - a.puan);
-  return sonuc.slice(0, 4);
+
+  // Ayni plakayi farkli esiklerde birden fazla bulduysak tekini birak
+  hepsi.sort((a,b) => b.puan - a.puan);
+  const secilen = [];
+  for(const k of hepsi){
+    const cakisiyor = secilen.some(v => {
+      const gx = Math.max(0, Math.min(k.x+k.w, v.x+v.w) - Math.max(k.x, v.x));
+      const gy = Math.max(0, Math.min(k.y+k.h, v.y+v.h) - Math.max(k.y, v.y));
+      const kesisim = gx*gy;
+      return kesisim > 0.25 * Math.min(k.w*k.h, v.w*v.h);
+    });
+    if(!cakisiyor) secilen.push(k);
+    if(secilen.length >= 6) break;
+  }
+  return secilen;
 }
 
 $('b-plaka').addEventListener('click', () => {
@@ -671,8 +711,8 @@ $('b-plaka').addEventListener('click', () => {
     let bulunan = [];
     try{ bulunan = plakaAday(f.bit); }catch(err){ console.warn(err); }
     bulunan.forEach(p => {
-      const pay = p.h * 0.3;
-      f.lekeler.push({ t:'r', x:p.x-pay, y:p.y-pay, w:p.w+pay*2, h:p.h+pay*2 });
+      const pay = p.h * 0.35;
+      f.lekeler.push({ t:'r', g:yeniGrup(f), x:p.x-pay, y:p.y-pay, w:p.w+pay*2, h:p.h+pay*2 });
     });
     ciz(); seritCiz();
     b.textContent = bulunan.length ? bulunan.length + ' aday işaretlendi' : 'Plaka bulunamadı';
@@ -757,25 +797,19 @@ $('b-telefon').addEventListener('click', async () => {
   if(!foto.length) return;
   const b = $('b-telefon'); b.disabled = true;
   const cikti = await hepsiniUret();
-  const dosyalar = cikti.map(x => new File([x.blob], x.ad, { type:'image/jpeg' }));
-  try{
-    if(navigator.canShare && navigator.canShare({ files:dosyalar })){
-      $('durum').textContent = 'Paylaşım penceresi açılıyor…';
-      await navigator.share({ files:dosyalar, title:'İlan fotoğrafları' });
-      $('durum').textContent = 'Fotoğrafları kaydetmek için açılan menüden "Görselleri Kaydet"i seçin.';
-    } else {
-      for(const x of cikti){
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(x.blob); a.download = x.ad; a.click();
-        URL.revokeObjectURL(a.href);
-        await new Promise(r => setTimeout(r, 350));
-      }
-      $('durum').textContent = foto.length + ' fotoğraf tek tek indirildi.';
-    }
-    $('bitti').classList.remove('gizli');
-  }catch(err){
-    $('durum').textContent = 'Kaydetme iptal edildi.';
+  $('durum').textContent = 'Dosyalar indiriliyor…';
+  for(const x of cikti){
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(x.blob);
+    a.download = x.ad;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    await new Promise(r => setTimeout(r, 400));
   }
+  $('durum').textContent = cikti.length + ' fotoğraf indirildi.';
+  $('bitti').classList.remove('gizli');
   b.disabled = false;
 });
 </script>
