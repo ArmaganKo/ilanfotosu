@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>İlan Fotoğrafı Hazırla — boyut küçültme, plaka kapatma, toplu kırpma</title>
+<meta name="description" content="Sahibinden ve diğer portallar için ilan fotoğrafı boyutu küçültme, plaka ve yüz sansürleme, fotoğraftan konum silme, toplu 4:3 kırpma. Ücretsiz ve üyeliksiz.">
+<style>
+:root{
+  --yesil:#3B8574; --yesil-koyu:#2C6355; --yesil-acik:#E8F1EE;
+  --gri:#F4F5F5; --cizgi:#DFE2E1; --metin:#22302C; --soluk:#6B7A75;
+  --uyari-bg:#FFF6E4; --uyari-cizgi:#F0DDB4; --uyari-metin:#8A5A00;
+}
+*{box-sizing:border-box}
+body{margin:0;padding-top:30px;background:#fff;color:var(--metin);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased}
+
+#serit-ag{position:fixed;top:0;left:0;right:0;height:30px;background:var(--yesil-koyu);
+  display:flex;align-items:center;gap:14px;padding:0 12px;overflow-x:auto;z-index:50;
+  font-size:12.5px;white-space:nowrap;-webkit-overflow-scrolling:touch}
+#serit-ag span{color:#BFD8D0;flex:none}
+#serit-ag a{color:#fff;text-decoration:none;flex:none;opacity:.85}
+#serit-ag a:hover{opacity:1;text-decoration:underline}
+#serit-ag a.burada{opacity:1;font-weight:700;text-decoration:none;cursor:default}
+
+.kap{max-width:720px;margin:0 auto;padding:20px 16px 130px}
+
+header{padding:8px 0 20px;border-bottom:1px solid var(--cizgi);margin-bottom:22px}
+h1.marka{font-size:22px;font-weight:800;letter-spacing:-.4px;color:var(--yesil-koyu);margin:0}
+.slogan{font-size:15px;color:var(--soluk);margin-top:4px}
+
+.adim{margin-bottom:22px}
+.adim-bas{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.adim-no{width:26px;height:26px;border-radius:50%;background:var(--yesil);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex:none}
+.adim-bas h2{margin:0;font-size:16px;font-weight:700;letter-spacing:-.2px}
+.kart{background:var(--gri);border:1px solid var(--cizgi);border-radius:14px;padding:16px}
+
+#birak{border:2px dashed var(--cizgi);border-radius:14px;padding:30px 18px;text-align:center;
+  background:var(--gri);cursor:pointer}
+#birak.uzerinde{border-color:var(--yesil);background:var(--yesil-acik)}
+#birak p{margin:0;font-size:15px;color:var(--soluk)}
+#birak b{display:block;color:var(--yesil-koyu);font-size:16px;margin-bottom:4px}
+
+label{display:block;font-size:13px;color:var(--soluk);margin-bottom:5px}
+select,input[type=text],input[type=number]{width:100%;padding:11px 12px;border:1px solid var(--cizgi);
+  border-radius:10px;background:#fff;font-size:16px;color:var(--metin);font-family:inherit}
+select:focus,input:focus{outline:2px solid var(--yesil);outline-offset:1px;border-color:var(--yesil)}
+.ikili{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.ikili:last-child{margin-bottom:0}
+@media(max-width:520px){.ikili{grid-template-columns:1fr}}
+
+.serit{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;-webkit-overflow-scrolling:touch}
+.kucuk{position:relative;flex:none;width:78px;height:78px;border-radius:10px;overflow:hidden;
+  border:2px solid transparent;cursor:grab;background:var(--gri);touch-action:pan-x}
+.kucuk.secili{border-color:var(--yesil)}
+.kucuk.tasiniyor{opacity:.55;transform:scale(.94)}
+.kucuk img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.kucuk .no{position:absolute;left:3px;top:3px;background:rgba(34,48,44,.78);color:#fff;
+  font-size:11px;font-weight:700;border-radius:5px;padding:1px 5px}
+.kucuk .isaret{position:absolute;right:3px;top:3px;background:var(--yesil);color:#fff;
+  font-size:11px;border-radius:5px;padding:1px 4px}
+
+#tuval{width:100%;display:block;border-radius:12px;background:var(--gri);touch-action:none}
+.arac{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.arac button{flex:1 1 auto;min-width:104px}
+
+button{padding:12px 14px;border-radius:11px;font-size:14.5px;font-weight:600;
+  font-family:inherit;cursor:pointer;background:#fff;color:var(--yesil-koyu);
+  border:1.5px solid var(--yesil)}
+button:hover{background:var(--yesil-acik)}
+button.aktif{background:var(--yesil);color:#fff}
+button.ana{background:var(--yesil);color:#fff;border-color:var(--yesil);width:100%;
+  padding:16px;font-size:16px;font-weight:700;margin-bottom:10px}
+button.ana:hover{background:var(--yesil-koyu)}
+button.sade{border-color:var(--cizgi);color:var(--soluk)}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible{outline:2px solid var(--yesil-koyu);outline-offset:2px}
+
+.kaydir{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:13px;color:var(--soluk)}
+.kaydir span{flex:none;width:96px}
+input[type=range]{flex:1;accent-color:var(--yesil)}
+
+.ipuc{font-size:13px;color:var(--soluk);margin-top:8px}
+.uyari{background:var(--uyari-bg);border:1px solid var(--uyari-cizgi);border-left:4px solid var(--uyari-metin);
+  border-radius:10px;padding:12px 14px;font-size:13.5px;color:var(--uyari-metin);margin-top:10px}
+
+#durum{font-size:13.5px;color:var(--soluk);margin-top:10px;text-align:center;min-height:20px}
+#bitti{margin-top:14px;background:var(--yesil-acik);border:1px solid var(--cizgi);
+  border-radius:14px;padding:16px;font-size:14.5px}
+#bitti b{display:block;font-size:16px;color:var(--yesil-koyu);margin-bottom:6px}
+#bitti a{color:var(--yesil-koyu);font-weight:700}
+
+details{background:var(--gri);border:1px solid var(--cizgi);border-radius:14px;padding:14px 16px;margin-top:10px}
+summary{cursor:pointer;font-weight:600;font-size:15px;color:var(--yesil-koyu)}
+details p,details li{font-size:14px;color:var(--soluk)}
+details ol,details ul{padding-left:18px;margin:10px 0 0}
+h2.sss{font-size:17px;margin:26px 0 10px;letter-spacing:-.2px}
+
+footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--cizgi);font-size:13px;color:var(--soluk)}
+footer a{color:var(--yesil-koyu)}
+.telif{margin-top:16px;padding-top:14px;border-top:1px solid var(--cizgi);
+  font-size:12.5px;line-height:1.7}
+.telif a.site{font-weight:700;font-size:14px}
+.gizli{display:none !important}
+</style>
+</head>
+<body>
+
+<nav id="serit-ag">
+  <span>Ücretsiz emlak araçları:</span>
+  <a href="https://parseltur.com">Parsel videosu</a>
+  <a href="https://gunesalirmi.com">Güneş alır mı?</a>
+  <a href="https://3dkatplan.com">3D kat planı</a>
+  <a href="#" class="burada">İlan fotoğrafı</a>
+</nav>
+
+<div class="kap">
+
+<header>
+  <h1 class="marka">İlan fotoğrafı hazırla</h1>
+  <div class="slogan">Boyutu küçült, plakayı ve yüzü kapat, konum bilgisini sil, portal ölçüsüne kırp</div>
+</header>
+
+<div class="adim">
+  <div class="adim-bas"><div class="adim-no">1</div><h2>Fotoğrafları ekleyin</h2></div>
+  <div id="birak">
+    <p><b>Fotoğrafları buraya bırakın</b>ya da dokunup galeriden seçin. Aynı anda birden fazla seçebilirsiniz. iPhone'un HEIC dosyaları da açılır.</p>
+  </div>
+  <input type="file" id="dosya" accept="image/*,.heic,.heif" multiple class="gizli">
+  <div class="serit" id="serit"></div>
+</div>
+
+<div class="adim" id="a-ayar">
+  <div class="adim-bas"><div class="adim-no">2</div><h2>Çıktı ayarları</h2></div>
+  <div class="kart">
+    <div class="ikili">
+      <div>
+        <label for="oran">En-boy oranı</label>
+        <select id="oran">
+          <option value="1.3333">4:3 — önerilen</option>
+          <option value="1.7778">16:9 — geniş</option>
+          <option value="1.5">3:2</option>
+          <option value="1">1:1 — kare</option>
+          <option value="0">Orijinal oran</option>
+        </select>
+      </div>
+      <div>
+        <label for="kenar">Uzun kenar (piksel)</label>
+        <select id="kenar">
+          <option value="1600">1600 — önerilen</option>
+          <option value="1200">1200</option>
+          <option value="1920">1920</option>
+          <option value="800">800</option>
+        </select>
+      </div>
+    </div>
+    <div class="ikili">
+      <div>
+        <label for="hedef">Hedef dosya boyutu (KB)</label>
+        <input type="number" id="hedef" value="500" min="80" max="4000" step="50">
+      </div>
+      <div>
+        <label for="onek">Dosya adı öneki</label>
+        <input type="text" id="onek" value="ilan" placeholder="ilan">
+      </div>
+    </div>
+    <div class="uyari">
+      Fotoğraflar yeniden kodlanırken içindeki konum (GPS) ve cihaz bilgisi otomatik silinir.
+      Böylece evin koordinatı fotoğrafın içinde portala gitmez.
+    </div>
+  </div>
+</div>
+
+<div class="adim gizli" id="a-duzen">
+  <div class="adim-bas"><div class="adim-no">3</div><h2>Kadraj, aydınlık ve bulanıklaştırma</h2></div>
+  <div class="kart">
+    <canvas id="tuval"></canvas>
+
+    <div class="kaydir">
+      <span>Yakınlaştır</span>
+      <input type="range" id="zoom" min="100" max="300" value="100">
+    </div>
+    <div class="kaydir">
+      <span>Aydınlık</span>
+      <input type="range" id="isik" min="100" max="150" value="100">
+    </div>
+
+    <div class="arac">
+      <button id="m-kadraj" class="aktif">Kadrajı kaydır</button>
+      <button id="m-bulanik">Bulanıklaştır</button>
+      <button id="b-yuz" class="sade">Yüzleri bul</button>
+      <button id="b-plaka" class="sade">Plakaları bul</button>
+      <button id="b-geri" class="sade">Son lekeyi sil</button>
+      <button id="b-hepsi" class="sade">Ayarı hepsine uygula</button>
+    </div>
+    <p class="ipuc" id="ipuc">Parmağınızı sürükleyerek kadrajı kaydırın. Bulanıklaştırmak için önce "Bulanıklaştır" düğmesine basın.</p>
+  </div>
+</div>
+
+<div class="adim gizli" id="a-indir">
+  <div class="adim-bas"><div class="adim-no">4</div><h2>İndirin</h2></div>
+  <button class="ana" id="b-indir">Hepsini zip olarak indir</button>
+  <button class="ana gizli" id="b-telefon" style="background:#fff;color:var(--yesil-koyu)">Telefona kaydet</button>
+  <div id="durum"></div>
+  <div id="bitti" class="gizli">
+    <b>Fotoğraflar hazır.</b>
+    İlanı tamamlamak için kat planı da eklemek ister misiniz? Ölçüleri girin,
+    <a href="https://3dkatplan.com">3dkatplan.com</a> ilana koyacağınız 3 boyutlu kat planını üretsin.
+  </div>
+</div>
+
+<h2 class="sss">Sık sorulan sorular</h2>
+
+<details>
+  <summary>Nasıl kullanılır?</summary>
+  <ol>
+    <li>1. adımda fotoğrafları ekleyin. Şeritteki küçük görsellere dokunarak aralarında geçiş yapar, basılı tutup sürükleyerek sıralarını değiştirirsiniz. Baştaki fotoğraf kapak olur; dosya adlarındaki numaralar da bu sıraya göre verilir.</li>
+    <li>2. adımda oranı seçin. Portallar yatay fotoğrafı sever; 4:3 çoğu ilan sitesinde kırpılmadan görünür.</li>
+    <li>3. adımda kadrajı parmağınızla kaydırın, gerekirse yakınlaştırın. Oda loşsa aydınlık çubuğunu biraz sağa çekin. "Bulanıklaştır" moduna geçip yüzün ya da plakanın üstünden geçin.</li>
+    <li>Aynı evin fotoğrafları benzer çekildiği için bir tanesinin kadrajını ve aydınlığını ayarlayıp "Ayarı hepsine uygula" demek çoğu zaman yeterli olur.</li>
+    <li>4. adımda hepsini tek zip dosyası olarak indirin ya da telefonunuza doğrudan kaydedin.</li>
+  </ol>
+  <p>Hiçbir fotoğraf sunucuya yüklenmez. Tüm işlem kendi tarayıcınızda yapılır, sayfayı kapattığınızda hiçbir iz kalmaz.</p>
+</details>
+
+<details>
+  <summary>Sahibinden fotoğraf boyutu küçültme nasıl yapılır?</summary>
+  <p>Sahibinden.com'a yüklediğiniz fotoğraflar 800x600 pikselin üzerindeyse site bunları
+  otomatik olarak küçültür, dosya sınırı ise fotoğraf başına 10 MB'tır. Telefonla çekilen
+  bir fotoğraf çoğu zaman 4-8 MB olduğu için yükleme yavaşlar, sıkıştırma da sitenin
+  insafına kalır.</p>
+  <p>Bu araçta hedef dosya boyutunu KB cinsinden yazarsınız, araç kaliteyi kendisi ayarlayıp
+  o boyutun altında kalan bir fotoğraf üretir. 500 KB çoğu ilan için yeterlidir ve
+  hem yükleme hızlanır hem netlik korunur. Sahibinden fotoğraf boyutu küçültme işini
+  başka bir program kurmadan, doğrudan tarayıcınızda yaparsınız.</p>
+</details>
+
+<details>
+  <summary>İlan fotoğrafında plaka kapatma ve yüz sansürleme nasıl yapılır?</summary>
+  <p>İlan fotoğraflarında araç plakası, komşuların yüzü ya da kapı zilindeki isim
+  görünmesi hem rahatsız edici hem gereksiz risktir. Bu araçta üç yolu var:
+  "Yüzleri bul" düğmesi fotoğraftaki yüzleri arayıp üstlerini kapatır,
+  "Plakaları bul" düğmesi plaka görünümlü dikdörtgenleri işaretler,
+  "Bulanıklaştır" modunda ise parmağınızı gezdirdiğiniz her yer bulanıklaşır.</p>
+  <p>Otomatik aramaların ikisi de kesin sonuç vermez; kaçırabilir, fazladan yer de
+  işaretleyebilir. Bu yüzden işaretlenen yerleri gözden geçirin, gereksizini
+  "Son lekeyi sil" ile kaldırın, atlananı elle kapatın. Plaka kapatma ve yüz sansürleme
+  işinde son karar her zaman sizde olmalı.</p>
+</details>
+
+<details>
+  <summary>Fotoğraftan konum silme neden gerekli?</summary>
+  <p>Telefonla çekilen her fotoğrafın içine çekim yeri, tarihi ve cihaz bilgisi gömülür.
+  Buna EXIF verisi denir. İlanda adresi gizleseniz bile fotoğrafı indiren biri bu bilgiyi
+  okuyup evin koordinatını haritada bulabilir. Boş bir evin adresinin dolaşıma girmesi
+  ev sahibi için ciddi bir güvenlik sorunudur.</p>
+  <p>Bu araç fotoğrafı yeniden kodladığı için fotoğraftan konum silme işlemi kendiliğinden
+  yapılır. Ayrı bir düğmeye basmanıza gerek yoktur; indirdiğiniz dosyaların içinde
+  konum, tarih ve cihaz bilgisi bulunmaz.</p>
+</details>
+
+<details>
+  <summary>Fotoğrafları toplu olarak 4:3 kırpmak mümkün mü?</summary>
+  <p>Evet. Oran listesinden 4:3'ü seçin, bir fotoğrafın kadrajını beğendiğiniz gibi
+  ayarlayın ve "Ayarı hepsine uygula" düğmesine basın. Aynı evin fotoğrafları benzer
+  açıyla çekildiği için tek ayar çoğu zaman hepsine oturur. 4:3 fotoğraf kırpma toplu
+  yapıldığında ilan sayfasında bütün görseller aynı yükseklikte durur, ilan derli toplu görünür.</p>
+  <p>Kadrajı kaçan fotoğraf olursa şeritten ona geçip tek tek düzeltebilirsiniz.
+  16:9, 3:2 ve kare oranlar için de aynı yol geçerlidir.</p>
+</details>
+
+<details>
+  <summary>iPhone ile çekilen HEIC fotoğraflar açılır mı?</summary>
+  <p>Açılır. Telefondan seçtiğinizde iOS çoğu zaman kendisi JPEG'e çevirir.
+  Bilgisayara aktardığınız .heic dosyalarını sürükleyip bıraktığınızda ise araç
+  dönüştürmeyi kendisi yapar, ilk HEIC dosyasında birkaç saniye sürebilir.
+  Çıktılar her durumda JPEG olarak iner, portallar bu formatı sorunsuz kabul eder.</p>
+</details>
+
+<footer>
+  Ücretsiz ve üyeliksizdir. Tüm işlem tarayıcınızda yapılır, sunucuya fotoğraf gönderilmez.<br>
+  Diğer ücretsiz araçlar:
+  <a href="https://parseltur.com">parseltur.com</a> ·
+  <a href="https://gunesalirmi.com">gunesalirmi.com</a> ·
+  <a href="https://3dkatplan.com">3dkatplan.com</a>
+
+  <div class="telif">
+    <a href="https://www.armagankocabas.com" class="site">www.armagankocabas.com</a>
+    <div>Armağan Kocabaş — İstanbul lüks konut uzmanı, RE/MAX Eksen</div>
+    <div>&copy; <span id="yil"></span> Armağan Kocabaş. Tüm hakları saklıdır.</div>
+  </div>
+</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+$('yil').textContent = new Date().getFullYear();
+const foto = [];
+let aktif = -1;
+let mod = 'kadraj';
+let dedektor = null;
+let heicHazir = null;
+
+/* ---------- dosya alma ---------- */
+$('birak').addEventListener('click', () => $('dosya').click());
+$('dosya').addEventListener('change', e => ekle(e.target.files));
+['dragenter','dragover'].forEach(t => $('birak').addEventListener(t, e => {
+  e.preventDefault(); $('birak').classList.add('uzerinde');
+}));
+['dragleave','drop'].forEach(t => $('birak').addEventListener(t, e => {
+  e.preventDefault(); $('birak').classList.remove('uzerinde');
+}));
+$('birak').addEventListener('drop', e => ekle(e.dataTransfer.files));
+
+function heicMi(f){
+  return /image\/(heic|heif)/i.test(f.type) || /\.(heic|heif)$/i.test(f.name);
+}
+function betikYukle(src){
+  return new Promise((ok, hata) => {
+    const s = document.createElement('script');
+    s.src = src; s.onload = ok; s.onerror = hata;
+    document.head.appendChild(s);
+  });
+}
+async function heicCevir(f){
+  if(!heicHazir){
+    heicHazir = betikYukle('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js');
+  }
+  await heicHazir;
+  const blob = await heic2any({ blob:f, toType:'image/jpeg', quality:0.92 });
+  return Array.isArray(blob) ? blob[0] : blob;
+}
+
+async function ekle(list){
+  const dizi = [...list];
+  if(dizi.some(heicMi)) $('birak').querySelector('b').textContent = 'HEIC dosyaları dönüştürülüyor…';
+  for(const f of dizi){
+    if(!f.type.startsWith('image/') && !heicMi(f)) continue;
+    try{
+      const kaynak = heicMi(f) ? await heicCevir(f) : f;
+      const bit = await createImageBitmap(kaynak, { imageOrientation:'from-image' });
+      foto.push({ ad:f.name, bit, cx:bit.width/2, cy:bit.height/2, zoom:1, isik:100, lekeler:[] });
+    }catch(err){ console.warn('Okunamadı:', f.name, err); }
+  }
+  $('birak').querySelector('b').textContent = 'Fotoğrafları buraya bırakın';
+  if(foto.length){
+    if(aktif < 0) aktif = 0;
+    $('a-duzen').classList.remove('gizli');
+    $('a-indir').classList.remove('gizli');
+    if(navigator.canShare) $('b-telefon').classList.remove('gizli');
+    seritCiz(); ciz(); ayarlariYukle();
+  }
+}
+
+/* ---------- şerit ---------- */
+let surukle = null;
+
+function seritCiz(){
+  $('serit').innerHTML = '';
+  foto.forEach((f, i) => {
+    const d = document.createElement('div');
+    d.className = 'kucuk' + (i===aktif ? ' secili' : '');
+    d._f = f;
+    const c = document.createElement('canvas');
+    c.width = 78; c.height = 78;
+    const x = c.getContext('2d');
+    const s = Math.max(78/f.bit.width, 78/f.bit.height);
+    const w = f.bit.width*s, h = f.bit.height*s;
+    x.drawImage(f.bit, (78-w)/2, (78-h)/2, w, h);
+    const im = document.createElement('img'); im.src = c.toDataURL(); im.draggable = false;
+    d.appendChild(im);
+    const n = document.createElement('span'); n.className='no'; n.textContent = i+1;
+    d.appendChild(n);
+    if(f.lekeler.length){
+      const s2 = document.createElement('span'); s2.className='isaret'; s2.textContent='●';
+      d.appendChild(s2);
+    }
+    d.addEventListener('pointerdown', e => {
+      surukle = { el:d, x:e.clientX, tasindi:false };
+      d.setPointerCapture(e.pointerId);
+      d.classList.add('tasiniyor');
+    });
+    d.addEventListener('pointermove', e => {
+      if(!surukle || surukle.el !== d) return;
+      if(!surukle.tasindi && Math.abs(e.clientX - surukle.x) < 10) return;
+      surukle.tasindi = true;
+      const alt = document.elementFromPoint(e.clientX, e.clientY);
+      const hedef = alt && alt.closest ? alt.closest('.kucuk') : null;
+      if(hedef && hedef !== d && hedef.parentElement === d.parentElement){
+        const once = hedef.compareDocumentPosition(d) & Node.DOCUMENT_POSITION_FOLLOWING;
+        hedef.parentElement.insertBefore(d, once ? hedef : hedef.nextSibling);
+      }
+    });
+    d.addEventListener('pointerup', () => {
+      if(!surukle || surukle.el !== d) return;
+      d.classList.remove('tasiniyor');
+      if(surukle.tasindi){
+        const eskiAktif = aktif >= 0 ? foto[aktif] : null;
+        const yeni = [...$('serit').children].map(el => el._f);
+        foto.length = 0; foto.push(...yeni);
+        aktif = eskiAktif ? foto.indexOf(eskiAktif) : -1;
+        seritCiz();
+      } else {
+        aktif = foto.indexOf(d._f);
+        seritCiz(); ciz(); ayarlariYukle();
+      }
+      surukle = null;
+    });
+    d.addEventListener('pointercancel', () => {
+      d.classList.remove('tasiniyor'); surukle = null; seritCiz();
+    });
+    $('serit').appendChild(d);
+  });
+}
+
+function ayarlariYukle(){
+  if(aktif < 0) return;
+  $('zoom').value = Math.round(foto[aktif].zoom*100);
+  $('isik').value = foto[aktif].isik;
+}
+
+/* ---------- kadraj hesabı ---------- */
+function oranDeger(f){
+  const v = parseFloat($('oran').value);
+  return v > 0 ? v : f.bit.width / f.bit.height;
+}
+function kadraj(f){
+  const ar = oranDeger(f), W = f.bit.width, H = f.bit.height;
+  const mw = Math.min(W, H*ar), mh = mw/ar;
+  const cw = mw/f.zoom, ch = mh/f.zoom;
+  const x = Math.min(Math.max(f.cx - cw/2, 0), W - cw);
+  const y = Math.min(Math.max(f.cy - ch/2, 0), H - ch);
+  return { x, y, w:cw, h:ch };
+}
+function filtre(f){
+  if(f.isik <= 100) return 'none';
+  const kontrast = 100 + (f.isik-100)*0.18;
+  return 'brightness(' + f.isik + '%) contrast(' + kontrast.toFixed(1) + '%)';
+}
+
+/* ---------- önizleme ---------- */
+let olcek = 1;
+function ciz(){
+  if(aktif < 0) return;
+  const f = foto[aktif], c = $('tuval'), g = c.getContext('2d');
+  const en = Math.min(c.parentElement.clientWidth - 32, 680);
+  olcek = en / f.bit.width;
+  c.width = en; c.height = Math.round(f.bit.height * olcek);
+  g.clearRect(0,0,c.width,c.height);
+  g.filter = filtre(f);
+  g.drawImage(f.bit, 0, 0, c.width, c.height);
+  g.filter = 'none';
+
+  if(f.lekeler.length){
+    const b = document.createElement('canvas');
+    b.width = c.width; b.height = c.height;
+    const bg = b.getContext('2d');
+    bg.filter = 'blur(' + Math.max(6, c.width*0.022) + 'px) ' + (filtre(f)==='none'?'':filtre(f));
+    bg.drawImage(f.bit, 0, 0, b.width, b.height);
+    g.save();
+    g.beginPath();
+    f.lekeler.forEach(l => {
+      if(l.t === 'c'){ g.moveTo((l.x+l.r)*olcek, l.y*olcek); g.arc(l.x*olcek, l.y*olcek, l.r*olcek, 0, 7); }
+      else g.rect(l.x*olcek, l.y*olcek, l.w*olcek, l.h*olcek);
+    });
+    g.clip();
+    g.drawImage(b, 0, 0);
+    g.restore();
+  }
+
+  const k = kadraj(f);
+  g.fillStyle = 'rgba(34,48,44,.55)';
+  g.fillRect(0, 0, c.width, k.y*olcek);
+  g.fillRect(0, (k.y+k.h)*olcek, c.width, c.height);
+  g.fillRect(0, k.y*olcek, k.x*olcek, k.h*olcek);
+  g.fillRect((k.x+k.w)*olcek, k.y*olcek, c.width, k.h*olcek);
+  g.strokeStyle = '#fff'; g.lineWidth = 2;
+  g.strokeRect(k.x*olcek+1, k.y*olcek+1, k.w*olcek-2, k.h*olcek-2);
+}
+window.addEventListener('resize', ciz);
+$('oran').addEventListener('change', ciz);
+$('zoom').addEventListener('input', e => {
+  if(aktif<0) return;
+  foto[aktif].zoom = e.target.value/100; ciz();
+});
+$('isik').addEventListener('input', e => {
+  if(aktif<0) return;
+  foto[aktif].isik = parseInt(e.target.value); ciz();
+});
+
+/* ---------- fare / parmak ---------- */
+let basili = false, sonX = 0, sonY = 0;
+const tuval = $('tuval');
+tuval.addEventListener('pointerdown', e => {
+  if(aktif<0) return;
+  basili = true; tuval.setPointerCapture(e.pointerId);
+  const p = nokta(e); sonX = p.x; sonY = p.y;
+  if(mod === 'bulanik') leke(p);
+});
+tuval.addEventListener('pointermove', e => {
+  if(!basili || aktif<0) return;
+  const p = nokta(e), f = foto[aktif];
+  if(mod === 'bulanik'){ leke(p); }
+  else {
+    f.cx -= (p.x - sonX); f.cy -= (p.y - sonY);
+    const k = kadraj(f);
+    f.cx = k.x + k.w/2; f.cy = k.y + k.h/2;
+  }
+  sonX = p.x; sonY = p.y;
+  ciz();
+});
+tuval.addEventListener('pointerup', () => { basili = false; seritCiz(); });
+tuval.addEventListener('pointercancel', () => { basili = false; });
+
+function nokta(e){
+  const r = tuval.getBoundingClientRect();
+  return { x:(e.clientX-r.left)/olcek * (tuval.width/r.width), y:(e.clientY-r.top)/olcek * (tuval.height/r.height) };
+}
+function leke(p){
+  const f = foto[aktif];
+  f.lekeler.push({ t:'c', x:p.x, y:p.y, r:Math.max(f.bit.width, f.bit.height)*0.035 });
+}
+
+$('m-kadraj').addEventListener('click', () => setMod('kadraj'));
+$('m-bulanik').addEventListener('click', () => setMod('bulanik'));
+function setMod(m){
+  mod = m;
+  $('m-kadraj').classList.toggle('aktif', m==='kadraj');
+  $('m-bulanik').classList.toggle('aktif', m==='bulanik');
+  $('ipuc').textContent = m==='bulanik'
+    ? 'Kapatmak istediğiniz yerin üstünden parmağınızı geçirin. Kadraja dönmek için "Kadrajı kaydır"a basın.'
+    : 'Parmağınızı sürükleyerek kadrajı kaydırın. Bulanıklaştırmak için önce "Bulanıklaştır" düğmesine basın.';
+}
+$('b-geri').addEventListener('click', () => {
+  if(aktif<0) return;
+  foto[aktif].lekeler.pop(); ciz(); seritCiz();
+});
+
+/* ---------- ayarı hepsine uygula ---------- */
+$('b-hepsi').addEventListener('click', () => {
+  if(aktif < 0 || foto.length < 2) return;
+  const k = foto[aktif];
+  const ox = k.cx / k.bit.width, oy = k.cy / k.bit.height, z = k.zoom, isik = k.isik;
+  foto.forEach((f, i) => {
+    if(i === aktif) return;
+    f.cx = ox * f.bit.width; f.cy = oy * f.bit.height; f.zoom = z; f.isik = isik;
+    const kk = kadraj(f);
+    f.cx = kk.x + kk.w/2; f.cy = kk.y + kk.h/2;
+  });
+  const b = $('b-hepsi');
+  b.textContent = (foto.length-1) + ' fotoğrafa uygulandı';
+  setTimeout(() => { b.textContent = 'Ayarı hepsine uygula'; }, 2200);
+});
+
+/* ---------- otomatik yüz ---------- */
+$('b-yuz').addEventListener('click', async () => {
+  if(aktif<0) return;
+  const b = $('b-yuz'); b.disabled = true; b.textContent = 'Aranıyor…';
+  try{
+    if(!dedektor){
+      const m = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14');
+      const fs = await m.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
+      dedektor = await m.FaceDetector.createFromOptions(fs, {
+        baseOptions:{ modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite' },
+        runningMode:'IMAGE', minDetectionConfidence:0.35
+      });
+    }
+    const f = foto[aktif];
+    const c = document.createElement('canvas');
+    c.width = f.bit.width; c.height = f.bit.height;
+    c.getContext('2d').drawImage(f.bit, 0, 0);
+    const r = dedektor.detect(c);
+    const bulunan = r.detections || [];
+    bulunan.forEach(d => {
+      const bb = d.boundingBox;
+      const pay = Math.max(bb.width, bb.height) * 0.25;
+      f.lekeler.push({ t:'r', x:bb.originX-pay, y:bb.originY-pay, w:bb.width+pay*2, h:bb.height+pay*2 });
+    });
+    ciz(); seritCiz();
+    b.textContent = bulunan.length ? bulunan.length + ' yüz bulundu' : 'Yüz bulunamadı';
+  }catch(err){
+    console.warn(err);
+    b.textContent = 'Otomatik arama açılmadı';
+    $('ipuc').textContent = 'Otomatik yüz araması bu cihazda çalışmadı. "Bulanıklaştır" moduyla elle kapatabilirsiniz.';
+  }
+  setTimeout(()=>{ b.textContent='Yüzleri bul'; b.disabled=false; }, 2500);
+});
+
+/* ---------- otomatik plaka ---------- */
+function plakaAday(bit){
+  const en = 720;
+  const s = Math.min(1, en / bit.width);
+  const W = Math.round(bit.width*s), H = Math.round(bit.height*s);
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d', { willReadFrequently:true });
+  g.drawImage(bit, 0, 0, W, H);
+  const d = g.getImageData(0, 0, W, H).data;
+
+  const N = W*H;
+  const gri = new Uint8Array(N), parlak = new Uint8Array(N), mavi = new Uint8Array(N);
+  for(let i=0, p=0; p<N; i+=4, p++){
+    const r=d[i], y2=d[i+1], b=d[i+2];
+    const y = (r*0.299 + y2*0.587 + b*0.114) | 0;
+    gri[p] = y;
+    const mx = Math.max(r,y2,b), mn = Math.min(r,y2,b);
+    parlak[p] = (y > 162 && mx-mn < 60) ? 1 : 0;
+    mavi[p]   = (b > 70 && b-r > 38 && b-y2 > 20) ? 1 : 0;
+  }
+
+  const etiket = new Int32Array(N).fill(-1);
+  const yigin = new Int32Array(N);
+  const kutular = [];
+  for(let p=0; p<N; p++){
+    if(!parlak[p] || etiket[p] >= 0) continue;
+    const id = kutular.length;
+    let n = 0; yigin[n++] = p; etiket[p] = id;
+    let x0 = p%W, x1 = x0, y0 = (p/W)|0, y1 = y0, adet = 0;
+    while(n > 0){
+      const q = yigin[--n]; adet++;
+      const qx = q%W, qy = (q/W)|0;
+      if(qx<x0) x0=qx; if(qx>x1) x1=qx;
+      if(qy<y0) y0=qy; if(qy>y1) y1=qy;
+      if(qx>0   && parlak[q-1] && etiket[q-1]<0){ etiket[q-1]=id; yigin[n++]=q-1; }
+      if(qx<W-1 && parlak[q+1] && etiket[q+1]<0){ etiket[q+1]=id; yigin[n++]=q+1; }
+      if(qy>0   && parlak[q-W] && etiket[q-W]<0){ etiket[q-W]=id; yigin[n++]=q-W; }
+      if(qy<H-1 && parlak[q+W] && etiket[q+W]<0){ etiket[q+W]=id; yigin[n++]=q+W; }
+    }
+    kutular.push({x0,y0,x1,y1,adet});
+  }
+
+  const sonuc = [];
+  for(const k of kutular){
+    const w = k.x1-k.x0+1, h = k.y1-k.y0+1;
+    if(h < 9 || w < 26 || w > W*0.5) continue;
+    const ar = w/h;
+    if(ar < 2.2 || ar > 6.5) continue;
+    if(k.adet/(w*h) < 0.32) continue;
+
+    let kenar = 0, say = 0;
+    for(let y=k.y0+1; y<k.y1; y++){
+      for(let x=k.x0+1; x<k.x1; x++){
+        const p = y*W+x;
+        if(Math.abs(gri[p]-gri[p-1]) > 45) kenar++;
+        say++;
+      }
+    }
+    if(!say) continue;
+    const yogunluk = kenar/say;
+    if(yogunluk < 0.08) continue;
+
+    let m = 0, mt = 0;
+    const bant = Math.max(1, Math.round(w*0.14));
+    for(let y=k.y0; y<=k.y1; y++)
+      for(let x=k.x0; x<k.x0+bant; x++){ m += mavi[y*W+x]; mt++; }
+
+    sonuc.push({ x:k.x0/s, y:k.y0/s, w:w/s, h:h/s, puan: yogunluk + ((mt && m/mt > 0.15) ? 0.5 : 0) });
+  }
+  sonuc.sort((a,b) => b.puan - a.puan);
+  return sonuc.slice(0, 4);
+}
+
+$('b-plaka').addEventListener('click', () => {
+  if(aktif < 0) return;
+  const b = $('b-plaka'); b.disabled = true; b.textContent = 'Aranıyor…';
+  setTimeout(() => {
+    const f = foto[aktif];
+    let bulunan = [];
+    try{ bulunan = plakaAday(f.bit); }catch(err){ console.warn(err); }
+    bulunan.forEach(p => {
+      const pay = p.h * 0.3;
+      f.lekeler.push({ t:'r', x:p.x-pay, y:p.y-pay, w:p.w+pay*2, h:p.h+pay*2 });
+    });
+    ciz(); seritCiz();
+    b.textContent = bulunan.length ? bulunan.length + ' aday işaretlendi' : 'Plaka bulunamadı';
+    if(!bulunan.length) $('ipuc').textContent = 'Plaka bulunamadı. "Bulanıklaştır" moduyla elle kapatabilirsiniz.';
+    setTimeout(() => { b.textContent = 'Plakaları bul'; b.disabled = false; }, 2500);
+  }, 30);
+});
+
+/* ---------- üretim ---------- */
+async function uret(f){
+  const k = kadraj(f);
+  const uzun = parseInt($('kenar').value);
+  const s = uzun / Math.max(k.w, k.h);
+  const W = Math.round(k.w*s), H = Math.round(k.h*s);
+
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  g.imageSmoothingQuality = 'high';
+  g.filter = filtre(f);
+  g.drawImage(f.bit, k.x, k.y, k.w, k.h, 0, 0, W, H);
+  g.filter = 'none';
+
+  if(f.lekeler.length){
+    const b = document.createElement('canvas'); b.width = W; b.height = H;
+    const bg = b.getContext('2d');
+    bg.filter = 'blur(' + Math.max(8, W*0.025) + 'px) ' + (filtre(f)==='none'?'':filtre(f));
+    bg.drawImage(f.bit, k.x, k.y, k.w, k.h, 0, 0, W, H);
+    g.save(); g.beginPath();
+    f.lekeler.forEach(l => {
+      if(l.t === 'c'){
+        const x=(l.x-k.x)*s, y=(l.y-k.y)*s, r=l.r*s;
+        g.moveTo(x+r, y); g.arc(x, y, r, 0, 7);
+      } else {
+        g.rect((l.x-k.x)*s, (l.y-k.y)*s, l.w*s, l.h*s);
+      }
+    });
+    g.clip(); g.drawImage(b, 0, 0); g.restore();
+  }
+
+  const hedef = parseInt($('hedef').value) * 1024;
+  let alt = 0.4, ust = 0.94, iyi = null;
+  for(let i=0; i<7; i++){
+    const q = (alt+ust)/2;
+    const blob = await new Promise(res => c.toBlob(res, 'image/jpeg', q));
+    if(blob.size > hedef){ ust = q; } else { iyi = blob; alt = q; }
+  }
+  return iyi || await new Promise(res => c.toBlob(res, 'image/jpeg', 0.4));
+}
+
+function onekAl(){
+  return ($('onek').value || 'ilan').trim().replace(/[^\wçğıöşüÇĞİÖŞÜ-]/g,'-');
+}
+async function hepsiniUret(){
+  const onek = onekAl(), cikti = [];
+  for(let i=0;i<foto.length;i++){
+    $('durum').textContent = (i+1) + ' / ' + foto.length + ' hazırlanıyor…';
+    const blob = await uret(foto[i]);
+    cikti.push({ ad: onek + '-' + String(i+1).padStart(2,'0') + '.jpg', blob });
+  }
+  return cikti;
+}
+
+$('b-indir').addEventListener('click', async () => {
+  if(!foto.length) return;
+  const b = $('b-indir'); b.disabled = true;
+  const cikti = await hepsiniUret();
+  $('durum').textContent = 'Zip paketleniyor…';
+  const zip = new JSZip();
+  cikti.forEach(x => zip.file(x.ad, x.blob));
+  const paket = await zip.generateAsync({type:'blob'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(paket);
+  a.download = onekAl() + '-fotograflar.zip';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  $('durum').textContent = foto.length + ' fotoğraf indirildi.';
+  $('bitti').classList.remove('gizli');
+  b.disabled = false;
+});
+
+$('b-telefon').addEventListener('click', async () => {
+  if(!foto.length) return;
+  const b = $('b-telefon'); b.disabled = true;
+  const cikti = await hepsiniUret();
+  const dosyalar = cikti.map(x => new File([x.blob], x.ad, { type:'image/jpeg' }));
+  try{
+    if(navigator.canShare && navigator.canShare({ files:dosyalar })){
+      $('durum').textContent = 'Paylaşım penceresi açılıyor…';
+      await navigator.share({ files:dosyalar, title:'İlan fotoğrafları' });
+      $('durum').textContent = 'Fotoğrafları kaydetmek için açılan menüden "Görselleri Kaydet"i seçin.';
+    } else {
+      for(const x of cikti){
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(x.blob); a.download = x.ad; a.click();
+        URL.revokeObjectURL(a.href);
+        await new Promise(r => setTimeout(r, 350));
+      }
+      $('durum').textContent = foto.length + ' fotoğraf tek tek indirildi.';
+    }
+    $('bitti').classList.remove('gizli');
+  }catch(err){
+    $('durum').textContent = 'Kaydetme iptal edildi.';
+  }
+  b.disabled = false;
+});
+</script>
+</body>
+</html>
