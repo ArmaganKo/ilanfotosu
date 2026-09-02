@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>İlan Fotoğrafı Hazırla — boyut küçültme, plaka kapatma, toplu kırpma</title>
 <meta name="description" content="Sahibinden ve diğer portallar için ilan fotoğrafı boyutu küçültme, plaka ve yüz sansürleme, fotoğraftan konum silme, toplu 4:3 kırpma. Ücretsiz ve üyeliksiz.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#2C6355">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ilanfotosu.com/">
+<meta property="og:title" content="İlan Fotosu — ilan fotoğrafı hazırlama aracı">
+<meta property="og:description" content="İlan fotoğraflarını portal ölçüsüne kırpın, plaka ve yüzleri kapatın, dosya boyutunu küçültün, konum bilgisini silin. Ücretsiz ve üyeliksiz.">
+<meta property="og:image" content="https://ilanfotosu.com/logo.png">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 :root{
   --yesil:#3B8574; --yesil-koyu:#2C6355; --yesil-acik:#E8F1EE;
@@ -27,7 +37,9 @@ body{margin:0;padding-top:30px;background:#fff;color:var(--metin);
 .kap{max-width:720px;margin:0 auto;padding:20px 16px 130px}
 
 header{padding:8px 0 20px;border-bottom:1px solid var(--cizgi);margin-bottom:22px}
-h1.marka{font-size:22px;font-weight:800;letter-spacing:-.4px;color:var(--yesil-koyu);margin:0}
+.logo{display:block;width:196px;max-width:60%;height:auto;margin:0 0 12px}
+h1.marka{font-size:21px;font-weight:800;letter-spacing:-.4px;color:var(--yesil-koyu);margin:0}
+@media(max-width:520px){.logo{width:150px}}
 .slogan{font-size:15px;color:var(--soluk);margin-top:4px}
 
 .adim{margin-bottom:22px}
@@ -119,6 +131,8 @@ footer a{color:var(--yesil-koyu)}
 <div class="kap">
 
 <header>
+  <img src="logo.png" class="logo" width="620" height="535"
+       alt="İlan Fotosu — emlak ilanı fotoğrafı hazırlama aracı">
   <h1 class="marka">İlan fotoğrafı hazırla</h1>
   <div class="slogan">Boyutu küçült, plakayı ve yüzü kapat, konum bilgisini sil, portal ölçüsüne kırp</div>
 </header>
