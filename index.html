@@ -37,9 +37,11 @@ body{margin:0;padding-top:30px;background:#fff;color:var(--metin);
 .kap{max-width:720px;margin:0 auto;padding:20px 16px 130px}
 
 header{padding:8px 0 20px;border-bottom:1px solid var(--cizgi);margin-bottom:22px}
-.logo{display:block;width:196px;max-width:60%;height:auto;margin:0 0 12px}
+.ev{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.logo{display:block;width:62px;height:auto;flex:none}
 h1.marka{font-size:21px;font-weight:800;letter-spacing:-.4px;color:var(--yesil-koyu);margin:0}
-@media(max-width:520px){.logo{width:150px}}
+.slogan{margin-top:8px}
+@media(max-width:520px){.logo{width:54px}h1.marka{font-size:19px}}
 .slogan{font-size:15px;color:var(--soluk);margin-top:4px}
 
 .adim{margin-bottom:22px}
@@ -125,15 +127,17 @@ footer a{color:var(--yesil-koyu)}
   <a href="https://parseltur.com">Parsel videosu</a>
   <a href="https://gunesalirmi.com">Güneş alır mı?</a>
   <a href="https://3dkatplan.com">3D kat planı</a>
-  <a href="#" class="burada">İlan fotoğrafı</a>
+  <a href="/" class="burada">İlan fotoğrafı</a>
 </nav>
 
 <div class="kap">
 
 <header>
-  <img src="logo.png" class="logo" width="620" height="535"
-       alt="İlan Fotosu — emlak ilanı fotoğrafı hazırlama aracı">
-  <h1 class="marka">İlan fotoğrafı hazırla</h1>
+  <a href="/" class="ev" aria-label="İlan Fotosu ana sayfa">
+    <img src="logo.png" class="logo" width="620" height="535"
+         alt="İlan Fotosu — emlak ilanı fotoğrafı hazırlama aracı">
+    <h1 class="marka">İlan fotoğrafı hazırla</h1>
+  </a>
   <div class="slogan">Boyutu küçült, plakayı ve yüzü kapat, konum bilgisini sil, portal ölçüsüne kırp</div>
 </header>
 
