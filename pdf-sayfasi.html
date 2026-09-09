@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF Küçültme — tapu, ruhsat ve iskan belgelerini sıkıştır</title>
+<meta name="description" content="Taranmış tapu, ruhsat, iskan ve yapı denetim belgelerini küçültün. PDF boyutu küçültme tarayıcınızda yapılır, belge sunucuya yüklenmez. Ücretsiz ve üyeliksiz.">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta name="theme-color" content="#2C6355">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ilanfotosu.com/pdf/">
+<meta property="og:title" content="PDF Küçültme — tapu ve ruhsat belgelerini sıkıştır">
+<meta property="og:description" content="Taranmış emlak belgelerini küçültün. Tarayıcınızda çalışır, belge sunucuya yüklenmez.">
+<meta property="og:image" content="https://ilanfotosu.com/logo.png">
+<style>
+:root{
+  --yesil:#3B8574; --yesil-koyu:#2C6355; --yesil-acik:#E8F1EE;
+  --gri:#F4F5F5; --cizgi:#DFE2E1; --metin:#22302C; --soluk:#6B7A75;
+  --uyari-bg:#FFF6E4; --uyari-cizgi:#F0DDB4; --uyari-metin:#8A5A00;
+}
+*{box-sizing:border-box}
+body{margin:0;padding-top:30px;background:#fff;color:var(--metin);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased}
+
+#serit-ag{position:fixed;top:0;left:0;right:0;height:30px;background:var(--yesil-koyu);
+  display:flex;align-items:center;gap:14px;padding:0 12px;overflow-x:auto;z-index:50;
+  font-size:12.5px;white-space:nowrap;-webkit-overflow-scrolling:touch}
+#serit-ag span{color:#BFD8D0;flex:none}
+#serit-ag a{color:#fff;text-decoration:none;flex:none;opacity:.85}
+#serit-ag a:hover{opacity:1;text-decoration:underline}
+#serit-ag a.burada{opacity:1;font-weight:700;cursor:default}
+
+.kap{max-width:720px;margin:0 auto;padding:20px 16px 130px}
+
+header{padding:8px 0 20px;border-bottom:1px solid var(--cizgi);margin-bottom:22px}
+.ev{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.logo{display:block;width:62px;height:auto;flex:none}
+h1.marka{font-size:21px;font-weight:800;letter-spacing:-.4px;color:var(--yesil-koyu);margin:0}
+.slogan{font-size:15px;color:var(--soluk);margin-top:8px}
+@media(max-width:520px){.logo{width:54px}h1.marka{font-size:19px}}
+
+.adim{margin-bottom:22px}
+.adim-bas{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.adim-no{width:26px;height:26px;border-radius:50%;background:var(--yesil);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex:none}
+.adim-bas h2{margin:0;font-size:16px;font-weight:700;letter-spacing:-.2px}
+.kart{background:var(--gri);border:1px solid var(--cizgi);border-radius:14px;padding:16px}
+
+#birak{display:block;border:2px dashed var(--cizgi);border-radius:14px;padding:30px 18px;text-align:center;
+  background:var(--gri);cursor:pointer}
+#birak.uzerinde{border-color:var(--yesil);background:var(--yesil-acik)}
+#birak p{margin:0;font-size:15px;color:var(--soluk)}
+#birak b{display:block;color:var(--yesil-koyu);font-size:16px;margin-bottom:4px}
+.secdugme{display:block;margin-top:10px;text-align:center;background:var(--yesil);color:#fff;
+  padding:15px;border-radius:11px;font-size:16px;font-weight:700;cursor:pointer}
+.secdugme:hover{background:var(--yesil-koyu)}
+
+label{display:block;font-size:13px;color:var(--soluk);margin-bottom:5px}
+select{width:100%;padding:11px 12px;border:1px solid var(--cizgi);border-radius:10px;
+  background:#fff;font-size:16px;color:var(--metin);font-family:inherit}
+select:focus{outline:2px solid var(--yesil);outline-offset:1px;border-color:var(--yesil)}
+.onay{display:flex;align-items:flex-start;gap:9px;margin-top:12px;font-size:14px;cursor:pointer}
+.onay input{width:19px;height:19px;accent-color:var(--yesil);margin:2px 0 0;flex:none}
+
+button{padding:12px 14px;border-radius:11px;font-size:14.5px;font-weight:600;
+  font-family:inherit;cursor:pointer;background:#fff;color:var(--yesil-koyu);
+  border:1.5px solid var(--yesil)}
+button:hover{background:var(--yesil-acik)}
+button.ana{background:var(--yesil);color:#fff;width:100%;padding:16px;font-size:16px;font-weight:700}
+button.ana:hover{background:var(--yesil-koyu)}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible{outline:2px solid var(--yesil-koyu);outline-offset:2px}
+
+.sonuc{background:var(--gri);border:1px solid var(--cizgi);border-radius:14px;
+  padding:14px 16px;margin-bottom:10px}
+.sonuc .ad{font-weight:700;font-size:15px;word-break:break-all}
+.sonuc .olcu{font-size:14px;color:var(--soluk);margin:6px 0 10px}
+.sonuc .kazanc{color:var(--yesil-koyu);font-weight:700}
+.sonuc button{width:100%}
+
+.uyari{background:var(--uyari-bg);border:1px solid var(--uyari-cizgi);border-left:4px solid var(--uyari-metin);
+  border-radius:10px;padding:12px 14px;font-size:13.5px;color:var(--uyari-metin);margin-top:10px}
+#durum{font-size:13.5px;color:var(--soluk);margin:10px 0;text-align:center;min-height:20px}
+
+details{background:var(--gri);border:1px solid var(--cizgi);border-radius:14px;padding:14px 16px;margin-top:10px}
+summary{cursor:pointer;font-weight:600;font-size:15px;color:var(--yesil-koyu)}
+details p,details li{font-size:14px;color:var(--soluk)}
+details ol,details ul{padding-left:18px;margin:10px 0 0}
+h2.sss{font-size:17px;margin:26px 0 10px;letter-spacing:-.2px}
+
+footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--cizgi);font-size:13px;color:var(--soluk)}
+footer a{color:var(--yesil-koyu)}
+.telif{margin-top:16px;padding-top:14px;border-top:1px solid var(--cizgi);font-size:12.5px;line-height:1.7}
+.telif a.site{font-weight:700;font-size:14px}
+.gizli{display:none !important}
+</style>
+</head>
+<body>
+
+<nav id="serit-ag">
+  <span>Ücretsiz emlak araçları:</span>
+  <a href="https://parseltur.com">Parsel videosu</a>
+  <a href="https://gunesalirmi.com">Güneş alır mı?</a>
+  <a href="https://3dkatplan.com">3D kat planı</a>
+  <a href="/">İlan fotoğrafı</a>
+  <a href="/pdf/" class="burada">PDF küçültme</a>
+  <a href="/sunum/">Portföy sunumu</a>
+</nav>
+
+<div class="kap">
+
+<header>
+  <a href="/" class="ev" aria-label="İlan Fotosu ana sayfa">
+    <img src="../logo.png" class="logo" width="620" height="535"
+         alt="İlan Fotosu — emlak ilanı fotoğrafı hazırlama aracı">
+    <h1 class="marka">PDF küçültme</h1>
+  </a>
+  <div class="slogan">Taranmış tapu, ruhsat, iskan ve yapı denetim belgelerini gönderilebilir boyuta indirin</div>
+</header>
+
+<div class="adim">
+  <div class="adim-bas"><div class="adim-no">1</div><h2>Belgeyi ekleyin</h2></div>
+  <label id="birak" for="dosya">
+    <p><b>PDF dosyalarını buraya bırakın</b>ya da dokunup seçin. Birden fazla dosya seçebilirsiniz.</p>
+  </label>
+  <input type="file" id="dosya" accept="application/pdf,.pdf" multiple class="gizli">
+  <label for="dosya" class="secdugme">Dosya seç</label>
+</div>
+
+<div class="adim">
+  <div class="adim-bas"><div class="adim-no">2</div><h2>Küçültme ayarı</h2></div>
+  <div class="kart">
+    <label for="seviye">Kalite</label>
+    <select id="seviye">
+      <option value="dengeli">Dengeli — ekranda ve baskıda okunur (önerilen)</option>
+      <option value="kucuk">En küçük — e-posta ve WhatsApp için</option>
+      <option value="kaliteli">Yüksek kalite — resmi kuruma verilecekse</option>
+    </select>
+    <label class="onay">
+      <input type="checkbox" id="gri">
+      <span>Siyah beyaza çevir. Taranmış belgelerde boyutu belirgin düşürür, yazının okunurluğunu bozmaz.</span>
+    </label>
+    <div class="uyari">
+      Bu araç sayfaları görüntüye çevirerek küçültür. Taranmış belgelerde çok iyi sonuç verir.
+      İçinde bilgisayarda yazılmış gerçek metin bulunan PDF'lerde ise yazı görüntüye dönüşür:
+      metin seçilemez ve aranamaz hale gelir. Sözleşme gibi belgelerde bunu göz önünde bulundurun.
+    </div>
+  </div>
+</div>
+
+<div class="adim gizli" id="a-sonuc">
+  <div class="adim-bas"><div class="adim-no">3</div><h2>İndirin</h2></div>
+  <div id="durum"></div>
+  <div id="liste"></div>
+</div>
+
+<h2 class="sss">Sık sorulan sorular</h2>
+
+<details>
+  <summary>Tapu ve ruhsat PDF'i neden bu kadar büyük oluyor?</summary>
+  <p>Tapu, iskan, ruhsat ve yapı denetim belgeleri genellikle tarayıcıdan ya da telefon
+  kamerasından geçirilerek PDF'e dönüştürülür. Tarayıcı her sayfayı yüksek çözünürlüklü
+  bir fotoğraf olarak kaydettiği için tek sayfalık bir tapu bile 5-10 MB olabilir.
+  E-posta eklerinin çoğu 20-25 MB ile sınırlıdır, portalların belge yükleme alanları
+  ise çok daha düşük sınırlar koyar.</p>
+  <p>Bu araç sayfaları ilan ve belge paylaşımı için yeterli çözünürlüğe indirip yeniden
+  kaydeder. Tapu PDF küçültme işlemi çoğu belgede boyutu onda birine düşürür.</p>
+</details>
+
+<details>
+  <summary>PDF boyutu küçültme belgenin okunurluğunu bozar mı?</summary>
+  <p>Dengeli ayarda bozmaz. Taranmış bir belgede yazılar ekranda ve normal baskıda
+  rahatça okunur. Resmi bir kuruma verecekseniz "Yüksek kalite" ayarını seçin,
+  boyut daha az düşer ama detay korunur. WhatsApp ya da e-postayla göndereceğiniz
+  bilgilendirme amaçlı belgelerde "En küçük" ayarı yeterlidir.</p>
+  <p>Siyah beyaza çevirme seçeneği taranmış belgelerde ek kazanç sağlar. Belgede renkli
+  mühür, imza ya da harita varsa bu seçeneği işaretlemeyin.</p>
+</details>
+
+<details>
+  <summary>Belgem sunucuya yükleniyor mu?</summary>
+  <p>Hayır. Bütün işlem kendi tarayıcınızda yapılır. PDF dosyası cihazınızdan çıkmaz,
+  hiçbir sunucuya gönderilmez, hiçbir yerde saklanmaz. Sayfayı kapattığınızda geriye
+  iz kalmaz.</p>
+  <p>Tapu ve kimlik içeren belgelerde bu önemlidir: internetteki çoğu ücretsiz PDF
+  sıkıştırma sitesi dosyanızı kendi sunucusuna yükler ve orada bir süre saklar.</p>
+</details>
+
+<details>
+  <summary>Kaç sayfalık belgeyi küçültebilirim?</summary>
+  <p>Sayfa sınırı yoktur ama işlem cihazınızın gücüne bağlıdır. Telefonda 20-30 sayfaya
+  kadar rahat çalışır, daha uzun belgeleri bilgisayardan yapmak daha hızlıdır.
+  İşlem sırasında sayfa numarasını ekranda görürsünüz.</p>
+</details>
+
+<footer>
+  Ücretsiz ve üyeliksizdir. Tüm işlem tarayıcınızda yapılır, sunucuya belge gönderilmez.<br>
+  Diğer ücretsiz araçlar:
+  <a href="https://parseltur.com">parseltur.com</a> ·
+  <a href="https://gunesalirmi.com">gunesalirmi.com</a> ·
+  <a href="https://3dkatplan.com">3dkatplan.com</a> ·
+  <a href="/">ilanfotosu.com</a> ·
+  <a href="/sunum/">Portföy sunumu</a>
+
+  <div class="telif">
+    <a href="https://www.armagankocabas.com" class="site">www.armagankocabas.com</a>
+    <div>Armağan Kocabaş — İstanbul lüks konut uzmanı, RE/MAX Eksen</div>
+    <div>&copy; <span id="yil"></span> Armağan Kocabaş. Tüm hakları saklıdır.</div>
+  </div>
+</footer>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+$('yil').textContent = new Date().getFullYear();
+
+const AYAR = {
+  kucuk:    { dpi: 96,  kalite: 0.58 },
+  dengeli:  { dpi: 124, kalite: 0.72 },
+  kaliteli: { dpi: 156, kalite: 0.84 }
+};
+
+let pdfHazir = null, jspdfHazir = null;
+
+function betikYukle(src){
+  return new Promise((ok, hata) => {
+    const s = document.createElement('script');
+    s.src = src; s.onload = ok; s.onerror = hata;
+    document.head.appendChild(s);
+  });
+}
+async function kutuphaneler(){
+  if(!pdfHazir){
+    pdfHazir = betikYukle('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js')
+      .then(() => {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      });
+  }
+  if(!jspdfHazir){
+    jspdfHazir = betikYukle('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+  }
+  await Promise.all([pdfHazir, jspdfHazir]);
+}
+
+function boyut(b){
+  return b < 1024*1024
+    ? (b/1024).toFixed(0) + ' KB'
+    : (b/1024/1024).toFixed(1) + ' MB';
+}
+
+$('dosya').addEventListener('change', e => { isle(e.target.files); e.target.value = ''; });
+['dragover','drop'].forEach(t => window.addEventListener(t, e => e.preventDefault()));
+['dragenter','dragover'].forEach(t => $('birak').addEventListener(t, e => {
+  e.preventDefault(); $('birak').classList.add('uzerinde');
+}));
+['dragleave','drop'].forEach(t => $('birak').addEventListener(t, e => {
+  e.preventDefault(); $('birak').classList.remove('uzerinde');
+}));
+$('birak').addEventListener('drop', e => isle(e.dataTransfer.files));
+
+async function kucult(dosya, ayar, griMi, bildir){
+  const veri = await dosya.arrayBuffer();
+  const belge = await pdfjsLib.getDocument({ data: veri }).promise;
+  const { jsPDF } = window.jspdf;
+  let cikti = null;
+
+  for(let i = 1; i <= belge.numPages; i++){
+    bildir(i, belge.numPages);
+    const sayfa = await belge.getPage(i);
+    const olcek = ayar.dpi / 72;
+    const gorunum = sayfa.getViewport({ scale: olcek });
+
+    const c = document.createElement('canvas');
+    c.width = Math.round(gorunum.width);
+    c.height = Math.round(gorunum.height);
+    const g = c.getContext('2d');
+    g.fillStyle = '#fff';
+    g.fillRect(0, 0, c.width, c.height);
+    await sayfa.render({ canvasContext: g, viewport: gorunum }).promise;
+
+    if(griMi){
+      const d = g.getImageData(0, 0, c.width, c.height);
+      const p = d.data;
+      for(let k = 0; k < p.length; k += 4){
+        const y = (p[k]*0.299 + p[k+1]*0.587 + p[k+2]*0.114) | 0;
+        p[k] = p[k+1] = p[k+2] = y;
+      }
+      g.putImageData(d, 0, 0);
+    }
+
+    const gorsel = c.toDataURL('image/jpeg', ayar.kalite);
+    const nokta = sayfa.getViewport({ scale: 1 });
+    const en = nokta.width, boy = nokta.height;
+
+    if(!cikti){
+      cikti = new jsPDF({ unit:'pt', format:[en, boy], orientation: en > boy ? 'l' : 'p' });
+    } else {
+      cikti.addPage([en, boy], en > boy ? 'l' : 'p');
+    }
+    cikti.addImage(gorsel, 'JPEG', 0, 0, en, boy);
+    await new Promise(r => setTimeout(r, 0));
+  }
+  return cikti.output('blob');
+}
+
+async function isle(dosyalar){
+  const liste = [...dosyalar].filter(f => /pdf$/i.test(f.name) || f.type === 'application/pdf');
+  if(!liste.length) return;
+
+  $('a-sonuc').classList.remove('gizli');
+  $('durum').textContent = 'Hazırlanıyor…';
+  try{
+    await kutuphaneler();
+  }catch(err){
+    console.warn(err);
+    $('durum').textContent = 'PDF motoru yüklenemedi. İnternet bağlantınızı kontrol edip sayfayı yenileyin.';
+    return;
+  }
+
+  const ayar = AYAR[$('seviye').value];
+  const griMi = $('gri').checked;
+
+  for(const f of liste){
+    $('durum').textContent = f.name + ' açılıyor…';
+    try{
+      const blob = await kucult(f, ayar, griMi,
+        (s, t) => $('durum').textContent = f.name + ' — sayfa ' + s + ' / ' + t);
+      sonucEkle(f, blob);
+    }catch(err){
+      console.warn(err);
+      const d = document.createElement('div');
+      d.className = 'sonuc';
+      d.innerHTML = '<div class="ad">' + f.name + '</div>' +
+        '<div class="olcu">Bu dosya açılamadı. Şifreli ya da bozuk bir PDF olabilir.</div>';
+      $('liste').appendChild(d);
+    }
+  }
+  $('durum').textContent = 'Bitti.';
+}
+
+function sonucEkle(f, blob){
+  const kazanc = Math.max(0, Math.round((1 - blob.size/f.size) * 100));
+  const ad = f.name.replace(/\.pdf$/i, '') + '-kucuk.pdf';
+  const d = document.createElement('div');
+  d.className = 'sonuc';
+  d.innerHTML =
+    '<div class="ad">' + ad + '</div>' +
+    '<div class="olcu">' + boyut(f.size) + ' → ' + boyut(blob.size) +
+    ' <span class="kazanc">%' + kazanc + ' küçüldü</span></div>';
+  const b = document.createElement('button');
+  b.className = 'ana';
+  b.textContent = 'İndir';
+  b.addEventListener('click', () => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = ad;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  });
+  d.appendChild(b);
+  $('liste').appendChild(d);
+}
+</script>
+</body>
+</html>
