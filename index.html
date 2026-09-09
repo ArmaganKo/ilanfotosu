@@ -1,309 +1,393 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>İlan Fotoğrafı Hazırla — boyut küçültme, plaka kapatma, toplu kırpma</title>
-<meta name="description" content="Sahibinden ve diğer portallar için ilan fotoğrafı boyutu küçültme, plaka ve yüz sansürleme, fotoğraftan konum silme, toplu 4:3 kırpma. Ücretsiz ve üyeliksiz.">
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Portföy Sunum Görseli Oluşturucu | ilanfotosu.com</title>
+<meta name="description" content="Emlak portföyü için Instagram karusel, story ve kare sunum görseli oluşturun. Şablon seçin, fotoğraflarınızı yükleyin, PNG olarak indirin. Ücretsiz ve üyeliksiz.">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <meta name="theme-color" content="#2C6355">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://ilanfotosu.com/">
-<meta property="og:title" content="İlan Fotosu — ilan fotoğrafı hazırlama aracı">
-<meta property="og:description" content="İlan fotoğraflarını portal ölçüsüne kırpın, plaka ve yüzleri kapatın, dosya boyutunu küçültün, konum bilgisini silin. Ücretsiz ve üyeliksiz.">
+<meta property="og:url" content="https://ilanfotosu.com/sunum/">
+<meta property="og:title" content="Portföy Sunum Görseli Oluşturucu">
+<meta property="og:description" content="Emlak portföyü için Instagram karusel, story ve kare sunum görselleri. Tarayıcıda çalışır, dosya sunucuya gönderilmez.">
 <meta property="og:image" content="https://ilanfotosu.com/logo.png">
 <meta name="twitter:card" content="summary_large_image">
 <style>
 :root{
-  --yesil:#3B8574; --yesil-koyu:#2C6355; --yesil-acik:#E8F1EE;
-  --gri:#F4F5F5; --cizgi:#DFE2E1; --metin:#22302C; --soluk:#6B7A75;
-  --uyari-bg:#FFF6E4; --uyari-cizgi:#F0DDB4; --uyari-metin:#8A5A00;
+  --yesil:#3B8574;
+  --yesil-koyu:#2C6355;
+  --yesil-acik:#E8F1EE;
+  --zemin:#ffffff;
+  --panel:#F4F5F5;
+  --cizgi:#DFE2E1;
+  --metin:#22302C;
+  --soluk:#6B7A75;
+  --danger:#9A3B35;
+  --shadow:0 14px 38px rgba(27,46,40,.12);
 }
 *{box-sizing:border-box}
-body{margin:0;padding-top:30px;background:#fff;color:var(--metin);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  line-height:1.5;-webkit-font-smoothing:antialiased}
-
-#serit-ag{position:fixed;top:0;left:0;right:0;height:30px;background:var(--yesil-koyu);
-  display:flex;align-items:center;gap:14px;padding:0 12px;overflow-x:auto;z-index:50;
-  font-size:12.5px;white-space:nowrap;-webkit-overflow-scrolling:touch}
-#serit-ag span{color:#BFD8D0;flex:none}
-#serit-ag a{color:#fff;text-decoration:none;flex:none;opacity:.85}
-#serit-ag a:hover{opacity:1;text-decoration:underline}
-#serit-ag a.burada{opacity:1;font-weight:700;text-decoration:none;cursor:default}
-
-.kap{max-width:720px;margin:0 auto;padding:20px 16px 130px}
-
-header{padding:8px 0 20px;border-bottom:1px solid var(--cizgi);margin-bottom:22px}
-.ev{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
-.logo{display:block;width:62px;height:auto;flex:none}
-h1.marka{font-size:21px;font-weight:800;letter-spacing:-.4px;color:var(--yesil-koyu);margin:0}
-.slogan{margin-top:8px}
-@media(max-width:520px){.logo{width:54px}h1.marka{font-size:19px}}
-.slogan{font-size:15px;color:var(--soluk);margin-top:4px}
-
-.adim{margin-bottom:22px}
-.adim-bas{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.adim-no{width:26px;height:26px;border-radius:50%;background:var(--yesil);color:#fff;
-  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex:none}
-.adim-bas h2{margin:0;font-size:16px;font-weight:700;letter-spacing:-.2px}
-.kart{background:var(--gri);border:1px solid var(--cizgi);border-radius:14px;padding:16px}
-
-#birak{border:2px dashed var(--cizgi);border-radius:14px;padding:30px 18px;text-align:center;
-  background:var(--gri);cursor:pointer}
-#birak.uzerinde{border-color:var(--yesil);background:var(--yesil-acik)}
-#birak p{margin:0;font-size:15px;color:var(--soluk)}
-#birak b{display:block;color:var(--yesil-koyu);font-size:16px;margin-bottom:4px}
-
-label{display:block;font-size:13px;color:var(--soluk);margin-bottom:5px}
-select,input[type=text],input[type=number]{width:100%;padding:11px 12px;border:1px solid var(--cizgi);
-  border-radius:10px;background:#fff;font-size:16px;color:var(--metin);font-family:inherit}
-select:focus,input:focus{outline:2px solid var(--yesil);outline-offset:1px;border-color:var(--yesil)}
-.ikili{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.ikili:last-child{margin-bottom:0}
-@media(max-width:520px){.ikili{grid-template-columns:1fr}}
-
-.serit{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;-webkit-overflow-scrolling:touch}
-.kucuk{position:relative;flex:none;width:78px;height:78px;border-radius:10px;overflow:hidden;
-  border:2px solid transparent;cursor:grab;background:var(--gri);touch-action:pan-x}
-.kucuk.secili{border-color:var(--yesil)}
-.kucuk.tasiniyor{opacity:.55;transform:scale(.94)}
-.kucuk img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
-.kucuk .no{position:absolute;left:3px;top:3px;background:rgba(34,48,44,.78);color:#fff;
-  font-size:11px;font-weight:700;border-radius:5px;padding:1px 5px}
-.kucuk .isaret{position:absolute;right:3px;top:3px;background:var(--yesil);color:#fff;
-  font-size:11px;border-radius:5px;padding:1px 4px}
-
-#tuval{width:100%;display:block;border-radius:12px;background:var(--gri);touch-action:none}
-.arac{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.arac button{flex:1 1 auto;min-width:104px}
-
-button{padding:12px 14px;border-radius:11px;font-size:14.5px;font-weight:600;
-  font-family:inherit;cursor:pointer;background:#fff;color:var(--yesil-koyu);
-  border:1.5px solid var(--yesil)}
-button:hover{background:var(--yesil-acik)}
-button.aktif{background:var(--yesil);color:#fff}
-button.ana{background:var(--yesil);color:#fff;border-color:var(--yesil);width:100%;
-  padding:16px;font-size:16px;font-weight:700;margin-bottom:10px}
-button.ana:hover{background:var(--yesil-koyu)}
-button.sade{border-color:var(--cizgi);color:var(--soluk)}
-button:disabled{opacity:.45;cursor:default}
-button:focus-visible{outline:2px solid var(--yesil-koyu);outline-offset:2px}
-
-.kaydir{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:13px;color:var(--soluk)}
-.kaydir span{flex:none;width:96px}
-input[type=range]{flex:1;accent-color:var(--yesil)}
-
-.ipuc{font-size:13px;color:var(--soluk);margin-top:8px}
-.uyari{background:var(--uyari-bg);border:1px solid var(--uyari-cizgi);border-left:4px solid var(--uyari-metin);
-  border-radius:10px;padding:12px 14px;font-size:13.5px;color:var(--uyari-metin);margin-top:10px}
-
-#durum{font-size:13.5px;color:var(--soluk);margin-top:10px;text-align:center;min-height:20px}
-#bitti{margin-top:14px;background:var(--yesil-acik);border:1px solid var(--cizgi);
-  border-radius:14px;padding:16px;font-size:14.5px}
-#bitti b{display:block;font-size:16px;color:var(--yesil-koyu);margin-bottom:6px}
-#bitti a{color:var(--yesil-koyu);font-weight:700}
-
-details{background:var(--gri);border:1px solid var(--cizgi);border-radius:14px;padding:14px 16px;margin-top:10px}
+html,body{margin:0;background:#fff;color:var(--metin);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+body{padding-top:30px}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+#serit-ag{
+  position:fixed;top:0;left:0;right:0;height:30px;z-index:50;
+  display:flex;align-items:center;gap:14px;padding:0 12px;overflow-x:auto;
+  background:var(--yesil-koyu);font-size:12.5px;white-space:nowrap
+}
+#serit-ag span{color:#BFD8D0}
+#serit-ag a{color:#fff;text-decoration:none;opacity:.86}
+#serit-ag a.burada{opacity:1;font-weight:800}
+.shell{max-width:1380px;margin:0 auto;padding:18px 16px 90px}
+header.site{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:8px 0 18px;border-bottom:1px solid var(--cizgi);margin-bottom:18px
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.brand-logo{width:56px;height:auto;flex:none;display:block}
+.brand h1{margin:0;font-size:23px;letter-spacing:-.4px}
+.brand p{margin:2px 0 0;color:var(--soluk);font-size:13px}
+.badge{
+  background:var(--yesil-acik);color:var(--yesil-koyu);font-weight:800;
+  padding:8px 12px;border-radius:999px;font-size:12px
+}
+h2.sss{font-size:17px;margin:26px 0 10px;letter-spacing:-.2px}
+details{background:var(--panel);border:1px solid var(--cizgi);border-radius:14px;padding:14px 16px;margin-top:10px}
 summary{cursor:pointer;font-weight:600;font-size:15px;color:var(--yesil-koyu)}
 details p,details li{font-size:14px;color:var(--soluk)}
-details ol,details ul{padding-left:18px;margin:10px 0 0}
-h2.sss{font-size:17px;margin:26px 0 10px;letter-spacing:-.2px}
-
-footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--cizgi);font-size:13px;color:var(--soluk)}
-footer a{color:var(--yesil-koyu)}
-.telif{margin-top:16px;padding-top:14px;border-top:1px solid var(--cizgi);
-  font-size:12.5px;line-height:1.7}
+details ol{padding-left:18px;margin:10px 0 0}
+.site-footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--cizgi);font-size:13px;color:var(--soluk)}
+.site-footer a{color:var(--yesil-koyu)}
+.telif{margin-top:16px;padding-top:14px;border-top:1px solid var(--cizgi);font-size:12.5px;line-height:1.7}
 .telif a.site{font-weight:700;font-size:14px}
-.gizli{display:none !important}
+h2.sss{font-size:17px;margin:26px 0 10px;letter-spacing:-.2px}
+details{background:var(--panel);border:1px solid var(--cizgi);border-radius:14px;padding:14px 16px;margin-top:10px}
+summary{cursor:pointer;font-weight:600;font-size:15px;color:var(--yesil-koyu)}
+details p,details li{font-size:14px;color:var(--soluk)}
+details ol{padding-left:18px;margin:10px 0 0}
+.site-footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--cizgi);font-size:13px;color:var(--soluk)}
+.site-footer a{color:var(--yesil-koyu)}
+.telif{margin-top:16px;padding-top:14px;border-top:1px solid var(--cizgi);font-size:12.5px;line-height:1.7}
+.telif a.site{font-weight:700;font-size:14px}
+.grid{display:grid;grid-template-columns:420px minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:1040px){.grid{grid-template-columns:1fr}.preview-wrap{position:static!important}}
+.panel{
+  background:#fff;border:1px solid var(--cizgi);border-radius:16px;padding:16px;
+  box-shadow:0 6px 22px rgba(27,46,40,.05)
+}
+.panel + .panel{margin-top:14px}
+.panel h2{margin:0 0 12px;font-size:15px}
+.step{display:flex;gap:9px;align-items:center;margin-bottom:10px}
+.step i{
+  display:flex;align-items:center;justify-content:center;width:26px;height:26px;
+  border-radius:50%;background:var(--yesil);color:#fff;font-style:normal;font-size:13px;font-weight:800
+}
+label{display:block;color:var(--soluk);font-size:12.5px;margin:10px 0 5px}
+input[type=text],input[type=tel],input[type=url],select,textarea{
+  width:100%;border:1px solid var(--cizgi);background:#fff;color:var(--metin);
+  border-radius:10px;padding:10px 11px;outline:none
+}
+textarea{min-height:72px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--yesil);box-shadow:0 0 0 3px rgba(59,133,116,.12)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.two{grid-template-columns:1fr}}
+.drop{
+  border:2px dashed #C8D2CF;background:var(--panel);border-radius:14px;padding:16px;text-align:center;
+  color:var(--soluk);cursor:pointer
+}
+.drop b{display:block;color:var(--yesil-koyu);margin-bottom:4px}
+.drop small{display:block;margin-top:3px}
+input[type=file]{display:none}
+.thumb-row{display:flex;gap:8px;overflow-x:auto;margin-top:10px;padding-bottom:4px}
+.thumb{
+  width:68px;height:68px;border-radius:9px;overflow:hidden;position:relative;flex:none;
+  border:2px solid transparent;background:var(--panel)
+}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb button{
+  position:absolute;right:2px;top:2px;border:0;background:rgba(0,0,0,.62);color:#fff;
+  width:20px;height:20px;border-radius:50%;font-size:12px;padding:0
+}
+.template-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:9px;max-height:460px;overflow:auto;padding-right:2px
+}
+.tpl{
+  border:2px solid transparent;border-radius:13px;background:#fff;padding:8px;text-align:left;
+  box-shadow:0 4px 15px rgba(27,46,40,.07)
+}
+.tpl.on{border-color:var(--yesil)}
+.tpl-preview{height:94px;border-radius:9px;overflow:hidden;position:relative;background:#ddd}
+.tpl-preview .photo{position:absolute;inset:0;background:linear-gradient(135deg,#dfe7e4,#aebcb8)}
+.tpl-preview .block{position:absolute}
+.tpl-preview .line{height:6px;border-radius:9px}
+.tpl-name{font-weight:800;font-size:12.5px;margin-top:7px}
+.tpl-desc{font-size:10.5px;color:var(--soluk);margin-top:1px}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.btn{
+  border:1.5px solid var(--yesil);background:#fff;color:var(--yesil-koyu);
+  border-radius:11px;padding:11px 14px;font-weight:750
+}
+.btn:hover{background:var(--yesil-acik)}
+.btn.primary{background:var(--yesil);color:#fff}
+.btn.primary:hover{background:var(--yesil-koyu)}
+.btn.dark{border-color:#26322f;background:#26322f;color:#fff}
+.preview-wrap{position:sticky;top:48px}
+.preview-top{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px
+}
+.preview-top b{font-size:15px}
+.page-tabs{display:flex;gap:5px;flex-wrap:wrap}
+.page-tabs button{
+  border:1px solid var(--cizgi);background:#fff;color:var(--soluk);border-radius:8px;padding:6px 9px;font-size:12px
+}
+.page-tabs button.on{background:var(--yesil);color:#fff;border-color:var(--yesil)}
+.canvas-box{
+  background:#EDEFEF;border:1px solid var(--cizgi);border-radius:17px;padding:14px;
+  display:flex;align-items:center;justify-content:center;min-height:620px
+}
+canvas{display:block;max-width:100%;max-height:74vh;box-shadow:var(--shadow);background:#fff}
+.tasma{
+  margin-top:10px;padding:11px 13px;background:#FFF6E4;border:1px solid #F0DDB4;
+  border-left:4px solid #8A5A00;border-radius:10px;font-size:13px;color:#8A5A00;line-height:1.45
+}
+.note{
+  margin-top:10px;padding:10px 12px;background:var(--yesil-acik);border-radius:10px;
+  font-size:12.5px;color:var(--yesil-koyu);line-height:1.45
+}
+.template-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:10px}
+.template-head p{margin:0;color:var(--soluk);font-size:12px}
+.mini-toggle{display:flex;gap:6px}
+.mini-toggle button{
+  border:1px solid var(--cizgi);background:#fff;border-radius:8px;padding:6px 9px;font-size:11px
+}
+.mini-toggle button.on{background:var(--yesil-acik);border-color:#b8d5cc;color:var(--yesil-koyu);font-weight:800}
+.helper{font-size:11px;color:var(--soluk);margin-top:5px}
+hr.sep{border:0;border-top:1px solid var(--cizgi);margin:14px 0}
+.footer-tip{
+  margin-top:16px;border:1px solid var(--cizgi);border-radius:14px;padding:13px;
+  background:linear-gradient(180deg,#fff,#f8fbfa);font-size:12px;color:var(--soluk)
+}
 </style>
 </head>
 <body>
-
 <nav id="serit-ag">
   <span>Ücretsiz emlak araçları:</span>
   <a href="https://parseltur.com">Parsel videosu</a>
   <a href="https://gunesalirmi.com">Güneş alır mı?</a>
   <a href="https://3dkatplan.com">3D kat planı</a>
-  <a href="/" class="burada">İlan fotoğrafı</a>
+  <a href="/">İlan fotoğrafı</a>
   <a href="/pdf/">PDF küçültme</a>
+  <a href="/sunum/" class="burada">Portföy sunumu</a>
 </nav>
 
-<div class="kap">
-
-<header>
-  <a href="/" class="ev" aria-label="İlan Fotosu ana sayfa">
-    <img src="logo.png" class="logo" width="620" height="535"
-         alt="İlan Fotosu — emlak ilanı fotoğrafı hazırlama aracı">
-    <h1 class="marka">İlan fotoğrafı hazırla</h1>
-  </a>
-  <div class="slogan">Boyutu küçült, plakayı ve yüzü kapat, konum bilgisini sil, portal ölçüsüne kırp</div>
-</header>
-
-<div class="adim">
-  <div class="adim-bas"><div class="adim-no">1</div><h2>Fotoğrafları ekleyin</h2></div>
-  <div id="birak">
-    <p><b>Fotoğrafları buraya bırakın</b>ya da dokunup galeriden seçin. Aynı anda birden fazla seçebilirsiniz. iPhone'un HEIC dosyaları da açılır.</p>
-  </div>
-  <input type="file" id="dosya" accept="image/*,.heic,.heif" multiple class="gizli">
-  <div class="serit" id="serit"></div>
-</div>
-
-<div class="adim" id="a-ayar">
-  <div class="adim-bas"><div class="adim-no">2</div><h2>Çıktı ayarları</h2></div>
-  <div class="kart">
-    <div class="ikili">
+<div class="shell">
+  <header class="site">
+    <a class="brand" href="/">
+      <img src="../logo.png" class="brand-logo" width="620" height="535"
+           alt="İlan Fotosu — emlak ilanı hazırlama araçları">
       <div>
-        <label for="oran">En-boy oranı</label>
-        <select id="oran">
-          <option value="1.3333">4:3 — önerilen</option>
-          <option value="1.7778">16:9 — geniş</option>
-          <option value="1.5">3:2</option>
-          <option value="1">1:1 — kare</option>
-          <option value="0">Orijinal oran</option>
+        <h1>Portföy sunum görseli oluştur</h1>
+        <p>Fotoğraflarını yükle, şablonunu seç, Instagram ve WhatsApp için indir.</p>
+      </div>
+    </a>
+    <span class="badge">Ücretsiz · API gerektirmez</span>
+  </header>
+
+  <div class="grid">
+    <div>
+      <section class="panel">
+        <div class="step"><i>1</i><h2>Portföy bilgileri</h2></div>
+
+        <div class="two">
+          <div>
+            <label>İlan türü</label>
+            <select id="ilanTuru">
+              <option>Satılık</option>
+              <option>Kiralık</option>
+              <option>Devren</option>
+              <option>Proje</option>
+              <option>Ticari</option>
+            </select>
+          </div>
+          <div>
+            <label>Portföy tipi</label>
+            <select id="portfoyTipi">
+              <option>Daire</option>
+              <option>Villa</option>
+              <option>Rezidans</option>
+              <option>Arsa</option>
+              <option>Ofis</option>
+              <option>Dükkan</option>
+              <option>Depo</option>
+              <option>Fabrika</option>
+              <option>Otel</option>
+            </select>
+          </div>
+        </div>
+
+        <label>Ana başlık</label>
+        <input id="baslik" type="text" value="Zekeriyaköy'de 3+1 Çatı Dubleks" placeholder="Örn. Boğaz Manzaralı 4+1 Özel Konut">
+
+        <div class="two">
+          <div>
+            <label>Lokasyon</label>
+            <input id="lokasyon" type="text" value="Zekeriyaköy / Sarıyer">
+          </div>
+          <div>
+            <label>Fiyat</label>
+            <input id="fiyat" type="text" value="18.500.000 TL" placeholder="İsterseniz boş bırakın">
+          </div>
+        </div>
+
+        <div class="two">
+          <div><label>Brüt m²</label><input id="brut" type="text" value="195 m²"></div>
+          <div><label>Net m²</label><input id="net" type="text" value="140 m²"></div>
+        </div>
+
+        <div class="two">
+          <div><label>Oda</label><input id="oda" type="text" value="3+1"></div>
+          <div><label>Öne çıkan kısa bilgi</label><input id="kisa" type="text" value="Önü açık yeşil alan manzarası"></div>
+        </div>
+
+        <label>Özellikler · her satıra bir özellik</label>
+        <textarea id="ozellikler">Geniş teras
+Doğal ışık
+Modern mutfak
+Otopark
+Site güvenliği
+Doğayla iç içe</textarea>
+      </section>
+
+      <section class="panel">
+        <div class="step"><i>2</i><h2>Fotoğraflar</h2></div>
+        <label class="drop" for="fotolar">
+          <b>Portföy fotoğraflarını yükleyin</b>
+          Kapak + yaşam alanları + manzara + lokasyon için 5–10 fotoğraf önerilir.
+          <small>JPG, PNG, WEBP · bütün işlem tarayıcıda yapılır.</small>
+        </label>
+        <input id="fotolar" type="file" accept="image/*" multiple>
+        <div class="thumb-row" id="thumbs"></div>
+      </section>
+
+      <section class="panel">
+        <div class="step"><i>3</i><h2>Danışman ve marka</h2></div>
+        <div class="two">
+          <div><label>Danışman adı</label><input id="danisman" type="text" value="" placeholder="İsteğe bağlı"></div>
+          <div><label>Ünvan</label><input id="unvan" type="text" value="" placeholder="İsteğe bağlı"></div>
+        </div>
+        <div class="two">
+          <div><label>Telefon</label><input id="telefon" type="tel" value="" placeholder="İsteğe bağlı"></div>
+          <div><label>Instagram</label><input id="instagram" type="text" value="" placeholder="İsteğe bağlı"></div>
+        </div>
+        <div class="two">
+          <div>
+            <label>Danışman fotoğrafı</label>
+            <label class="drop" for="danismanFoto"><b>Fotoğraf seç</b><small>Final sayfasında kullanılır.</small></label>
+            <input id="danismanFoto" type="file" accept="image/*">
+          </div>
+          <div>
+            <label>Logo</label>
+            <label class="drop" for="logo"><b>Logo seç</b><small>PNG önerilir.</small></label>
+            <input id="logo" type="file" accept="image/*">
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="step"><i>4</i><h2>Şablon seç</h2></div>
+        <div class="template-head">
+          <p>Şablon değiştirince içerik aynı kalır, tasarım değişir.</p>
+          <div class="mini-toggle">
+            <button class="on" data-filter="all">Tümü</button>
+            <button data-filter="lux">Lüks</button>
+            <button data-filter="std">Modern</button>
+            <button data-filter="com">Ticari</button>
+          </div>
+        </div>
+        <div class="template-grid" id="templates"></div>
+      </section>
+
+      <section class="panel">
+        <div class="step"><i>5</i><h2>Çıktı formatı</h2></div>
+        <select id="format">
+          <option value="carousel">5 sayfalık Instagram karusel · 1080×1350</option>
+          <option value="post">Tek kapak · 1080×1350</option>
+          <option value="story">Instagram Story · 1080×1920</option>
+          <option value="square">Kare gönderi · 1080×1080</option>
         </select>
-      </div>
-      <div>
-        <label for="kenar">Uzun kenar (piksel)</label>
-        <select id="kenar">
-          <option value="1600">1600 — önerilen</option>
-          <option value="1200">1200</option>
-          <option value="1920">1920</option>
-          <option value="800">800</option>
-        </select>
-      </div>
+        <div class="controls" style="margin-top:12px">
+          <button class="btn primary" id="yenile">Önizlemeyi oluştur</button>
+          <button class="btn" id="indir">Bu sayfayı indir</button>
+          <button class="btn dark" id="indirTum">Tüm sayfaları indir</button>
+        </div>
+        <p class="helper">Karusel seçiliyken 5 sayfa ayrı ayrı PNG olarak iner. Telefonda tarayıcı birden fazla indirme için izin sorabilir, izin verin.</p>
+      </section>
+
     </div>
-    <div class="ikili">
-      <div>
-        <label for="hedef">Hedef dosya boyutu (KB)</label>
-        <input type="number" id="hedef" value="500" min="80" max="4000" step="50">
-      </div>
-      <div>
-        <label for="onek">Dosya adı öneki</label>
-        <input type="text" id="onek" value="ilan" placeholder="ilan">
-      </div>
-    </div>
-    <div class="uyari">
-      Fotoğraflar yeniden kodlanırken içindeki konum (GPS) ve cihaz bilgisi otomatik silinir.
-      Böylece evin koordinatı fotoğrafın içinde portala gitmez.
+
+    <div class="preview-wrap">
+      <section class="panel">
+        <div class="preview-top">
+          <b>Canlı önizleme</b>
+          <div class="page-tabs" id="pageTabs"></div>
+        </div>
+        <div class="canvas-box"><canvas id="cv" width="1080" height="1350"></canvas></div>
+        <div class="tasma" id="tasma" style="display:none"></div>
+        <div class="note">
+          Şablon yalnızca yerleşim, renk, tipografi ve bilgi düzenini kurar; yeni ev görseli üretmez.
+          Fotoğraflar, logo ve danışman bilgileri cihazınızdan çıkmaz.
+        </div>
+      </section>
     </div>
   </div>
-</div>
 
-<div class="adim gizli" id="a-duzen">
-  <div class="adim-bas"><div class="adim-no">3</div><h2>Kadraj, aydınlık ve bulanıklaştırma</h2></div>
-  <div class="kart">
-    <canvas id="tuval"></canvas>
+  <h2 class="sss">Sık sorulan sorular</h2>
 
-    <div class="kaydir">
-      <span>Yakınlaştır</span>
-      <input type="range" id="zoom" min="100" max="300" value="100">
-    </div>
-    <div class="kaydir">
-      <span>Aydınlık</span>
-      <input type="range" id="isik" min="100" max="150" value="100">
-    </div>
+  <details>
+    <summary>Nasıl kullanılır?</summary>
+    <ol>
+      <li>Portföy bilgilerini doldurun. Yazdıkça sağdaki önizleme anında değişir.</li>
+      <li>Fotoğrafları yükleyin. Kapak, yaşam alanı, özellik, lokasyon ve kapanış için 5-10 fotoğraf yeterlidir; az yüklerseniz araç mevcut fotoğrafları tekrar kullanır.</li>
+      <li>Danışman adınızı, telefonunuzu ve logonuzu ekleyin. Bunlar son sayfaya ve şablonun logo alanına kendiliğinden yerleşir; ad, ünvan, telefon ve Instagram bir sonraki kullanımda hazır gelir.</li>
+      <li>Şablonu seçin. Şablon değişince içerik aynı kalır, yalnızca tasarım değişir.</li>
+      <li>Formatı seçip indirin. Karusel seçiliyken beş sayfa ayrı ayrı PNG olarak iner; zip açmanız gerekmez. Telefonda tarayıcı çoklu indirme için izin isterse onaylayın.</li>
+    </ol>
+    <p>Fotoğraflarınız, logonuz ve girdiğiniz bilgiler sunucuya gönderilmez. Bütün çizim kendi tarayıcınızda yapılır.</p>
+  </details>
 
-    <div class="arac">
-      <button id="m-kadraj" class="aktif">Kadrajı kaydır</button>
-      <button id="m-bulanik">Bulanıklaştır</button>
-      <button id="b-yuz" class="sade">Yüzleri bul</button>
-      <button id="b-plaka" class="sade">Plakaları bul</button>
-      <button id="b-geri" class="sade">Geri al</button>
-      <button id="b-hepsi" class="sade">Ayarı hepsine uygula</button>
-    </div>
-    <p class="ipuc" id="ipuc">Parmağınızı sürükleyerek kadrajı kaydırın. Bulanıklaştırmak için önce "Bulanıklaştır" düğmesine basın.</p>
-  </div>
-</div>
+  <details>
+    <summary>Instagram karusel ölçüsü kaç olmalı?</summary>
+    <p>Instagram gönderilerinde en fazla yer kaplayan oran 4:5, yani 1080×1350 pikseldir. Bu araç
+    karusel sayfalarını doğrudan bu ölçüde üretir. Story için 1080×1920, kare gönderi için
+    1080×1080 çıktı alınır.</p>
+    <p>Story şablonunda yazılar üstten ve alttan içeride tutulur; böylece Instagram'ın kendi arayüzü,
+    profil adı ve yanıt kutusu metnin üzerine binmez.</p>
+  </details>
 
-<div class="adim gizli" id="a-indir">
-  <div class="adim-bas"><div class="adim-no">4</div><h2>İndirin</h2></div>
-  <button class="ana" id="b-indir">Hepsini zip olarak indir</button>
-  <button class="ana" id="b-telefon" style="background:#fff;color:var(--yesil-koyu)">Fotoğrafları tek tek indir</button>
-  <div id="durum"></div>
-  <div id="bitti" class="gizli">
-    <b>Fotoğraflar hazır.</b>
-    İlanı tamamlamak için kat planı da eklemek ister misiniz? Ölçüleri girin,
-    <a href="https://3dkatplan.com">3dkatplan.com</a> ilana koyacağınız 3 boyutlu kat planını üretsin.
-  </div>
-</div>
+  <details>
+    <summary>Kendi logomu ve fotoğrafımı ekleyebilir miyim?</summary>
+    <p>Evet. Logo alanına yüklediğiniz görsel şablonun logo bölgesine yerleşir, danışman fotoğrafı
+    ise karuselin son sayfasındaki iletişim bölümünde kullanılır. Logo için arka planı saydam PNG
+    en temiz sonucu verir; JPG yüklerseniz logonun beyaz zemini görünür.</p>
+  </details>
 
-<h2 class="sss">Sık sorulan sorular</h2>
+  <details>
+    <summary>Şablonlar neyi değiştiriyor?</summary>
+    <p>Şablon; renk paletini, yazı karakterini ve kapak sayfasının yerleşimini belirler.
+    Karuselin iç sayfaları ortak bir düzen kullanır ve şablonun renkleriyle boyanır.
+    Lüks, modern ve ticari olmak üzere üç grup vardır.</p>
+  </details>
 
-<details>
-  <summary>Nasıl kullanılır?</summary>
-  <ol>
-    <li>Fotoğrafları ekleyin. Şeritteki küçük görsellere dokunarak aralarında geçiş yapar, basılı tutup sürükleyerek sıralarını değiştirirsiniz. Baştaki fotoğraf kapak olur; dosya adlarındaki numaralar da bu sıraya göre verilir.</li>
-    <li>Oranı seçin. Portallar yatay fotoğrafı sever; 4:3 çoğu ilan sitesinde kırpılmadan görünür.</li>
-    <li>Kadrajı parmağınızla kaydırın, gerekirse yakınlaştırın. Oda loşsa aydınlık çubuğunu biraz sağa çekin. "Bulanıklaştır" moduna geçip yüzün ya da plakanın üstünden geçin.</li>
-    <li>Aynı evin fotoğrafları benzer çekildiği için bir tanesinin kadrajını ve aydınlığını ayarlayıp "Ayarı hepsine uygula" demek çoğu zaman yeterli olur.</li>
-    <li>Hepsini tek zip dosyası olarak indirin ya da fotoğrafları tek tek indirin.</li>
-  </ol>
-  <p>Hiçbir fotoğraf sunucuya yüklenmez. Tüm işlem kendi tarayıcınızda yapılır, sayfayı kapattığınızda hiçbir iz kalmaz.</p>
-</details>
-
-<details>
-  <summary>Sahibinden fotoğraf boyutu küçültme nasıl yapılır?</summary>
-  <p>Sahibinden.com'a yüklediğiniz fotoğraflar 800x600 pikselin üzerindeyse site bunları
-  otomatik olarak küçültür, dosya sınırı ise fotoğraf başına 10 MB'tır. Telefonla çekilen
-  bir fotoğraf çoğu zaman 4-8 MB olduğu için yükleme yavaşlar, sıkıştırma da sitenin
-  insafına kalır.</p>
-  <p>Bu araçta hedef dosya boyutunu KB cinsinden yazarsınız, araç kaliteyi kendisi ayarlayıp
-  o boyutun altında kalan bir fotoğraf üretir. 500 KB çoğu ilan için yeterlidir ve
-  hem yükleme hızlanır hem netlik korunur. Sahibinden fotoğraf boyutu küçültme işini
-  başka bir program kurmadan, doğrudan tarayıcınızda yaparsınız.</p>
-</details>
-
-<details>
-  <summary>İlan fotoğrafında plaka kapatma ve yüz sansürleme nasıl yapılır?</summary>
-  <p>İlan fotoğraflarında araç plakası, komşuların yüzü ya da kapı zilindeki isim
-  görünmesi hem rahatsız edici hem gereksiz risktir. Bu araçta üç yolu var:
-  "Yüzleri bul" düğmesi fotoğraftaki yüzleri arayıp üstlerini kapatır,
-  "Plakaları bul" düğmesi plaka görünümlü dikdörtgenleri işaretler,
-  "Bulanıklaştır" modunda ise parmağınızı gezdirdiğiniz her yer bulanıklaşır.</p>
-  <p>Otomatik aramaların ikisi de kesin sonuç vermez; kaçırabilir, fazladan yer de
-  işaretleyebilir. Bu yüzden işaretlenen yerleri gözden geçirin, gereksizini
-  "Geri al" ile kaldırın, atlananı elle kapatın. Plaka kapatma ve yüz sansürleme
-  işinde son karar her zaman sizde olmalı.</p>
-</details>
-
-<details>
-  <summary>Fotoğraftan konum silme neden gerekli?</summary>
-  <p>Telefonla çekilen her fotoğrafın içine çekim yeri, tarihi ve cihaz bilgisi gömülür.
-  Buna EXIF verisi denir. İlanda adresi gizleseniz bile fotoğrafı indiren biri bu bilgiyi
-  okuyup evin koordinatını haritada bulabilir. Boş bir evin adresinin dolaşıma girmesi
-  ev sahibi için ciddi bir güvenlik sorunudur.</p>
-  <p>Bu araç fotoğrafı yeniden kodladığı için fotoğraftan konum silme işlemi kendiliğinden
-  yapılır. Ayrı bir düğmeye basmanıza gerek yoktur; indirdiğiniz dosyaların içinde
-  konum, tarih ve cihaz bilgisi bulunmaz.</p>
-</details>
-
-<details>
-  <summary>Fotoğrafları toplu olarak 4:3 kırpmak mümkün mü?</summary>
-  <p>Evet. Oran listesinden 4:3'ü seçin, bir fotoğrafın kadrajını beğendiğiniz gibi
-  ayarlayın ve "Ayarı hepsine uygula" düğmesine basın. Aynı evin fotoğrafları benzer
-  açıyla çekildiği için tek ayar çoğu zaman hepsine oturur. 4:3 fotoğraf kırpma toplu
-  yapıldığında ilan sayfasında bütün görseller aynı yükseklikte durur, ilan derli toplu görünür.</p>
-  <p>Kadrajı kaçan fotoğraf olursa şeritten ona geçip tek tek düzeltebilirsiniz.
-  16:9, 3:2 ve kare oranlar için de aynı yol geçerlidir.</p>
-</details>
-
-<details>
-  <summary>iPhone ile çekilen HEIC fotoğraflar açılır mı?</summary>
-  <p>Açılır. Telefondan seçtiğinizde iOS çoğu zaman kendisi JPEG'e çevirir.
-  Bilgisayara aktardığınız .heic dosyalarını sürükleyip bıraktığınızda ise araç
-  dönüştürmeyi kendisi yapar, ilk HEIC dosyasında birkaç saniye sürebilir.
-  Çıktılar her durumda JPEG olarak iner, portallar bu formatı sorunsuz kabul eder.</p>
-</details>
-
-<footer>
-  Ücretsiz ve üyeliksizdir. Tüm işlem tarayıcınızda yapılır, sunucuya fotoğraf gönderilmez.<br>
+<footer class="site-footer">
+  Ücretsiz ve üyeliksizdir. Tüm işlem tarayıcınızda yapılır, sunucuya dosya gönderilmez.<br>
   Diğer ücretsiz araçlar:
   <a href="https://parseltur.com">parseltur.com</a> ·
   <a href="https://gunesalirmi.com">gunesalirmi.com</a> ·
   <a href="https://3dkatplan.com">3dkatplan.com</a> ·
+  <a href="/">ilanfotosu.com</a> ·
   <a href="/pdf/">PDF küçültme</a>
 
   <div class="telif">
@@ -312,526 +396,384 @@ footer a{color:var(--yesil-koyu)}
     <div>&copy; <span id="yil"></span> Armağan Kocabaş. Tüm hakları saklıdır.</div>
   </div>
 </footer>
-
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 const $ = id => document.getElementById(id);
-$('yil').textContent = new Date().getFullYear();
-const foto = [];
-let aktif = -1;
-let mod = 'kadraj';
-let dedektor = null;
-let heicHazir = null;
 
-/* ---------- dosya alma ---------- */
-$('birak').addEventListener('click', () => $('dosya').click());
-$('dosya').addEventListener('change', e => ekle(e.target.files));
-['dragenter','dragover'].forEach(t => $('birak').addEventListener(t, e => {
-  e.preventDefault(); $('birak').classList.add('uzerinde');
-}));
-['dragleave','drop'].forEach(t => $('birak').addEventListener(t, e => {
-  e.preventDefault(); $('birak').classList.remove('uzerinde');
-}));
-$('birak').addEventListener('drop', e => ekle(e.dataTransfer.files));
+const TEMPLATES = [
+  {id:"collection",name:"Collection",cat:"lux",desc:"Koyu yeşil + serif lüks",layout:"hero",bg:"#102B25",fg:"#FFFFFF",accent:"#D6B36A",soft:"#EDE7DA"},
+  {id:"midnight",name:"Midnight Luxury",cat:"lux",desc:"Siyah + gümüş premium",layout:"hero",bg:"#111416",fg:"#FFFFFF",accent:"#C9CED2",soft:"#EDEFF0"},
+  {id:"ivory",name:"Ivory Editorial",cat:"lux",desc:"Fildişi editorial",layout:"editorial",bg:"#F5F0E7",fg:"#1E2624",accent:"#9B7A4E",soft:"#E5DDD0"},
+  {id:"monogram",name:"Monogram",cat:"lux",desc:"Fotoğraf odaklı zarif",layout:"frame",bg:"#F4F1EA",fg:"#1B2A26",accent:"#2C6355",soft:"#D9E4E0"},
+  {id:"modern",name:"Modern Split",cat:"std",desc:"Temiz iki kolon",layout:"split",bg:"#FFFFFF",fg:"#1D2926",accent:"#3B8574",soft:"#E8F1EE"},
+  {id:"teal",name:"Teal Clean",cat:"std",desc:"Kurumsal yeşil",layout:"split",bg:"#F7FAF9",fg:"#21322D",accent:"#3B8574",soft:"#DDEBE6"},
+  {id:"photo",name:"Photo Focus",cat:"std",desc:"Büyük görsel + bilgi",layout:"photo",bg:"#FFFFFF",fg:"#202A27",accent:"#2C6355",soft:"#E8F1EE"},
+  {id:"grid",name:"Gallery Grid",cat:"std",desc:"Çoklu fotoğraf vitrini",layout:"grid",bg:"#F7F6F1",fg:"#1C2724",accent:"#3B8574",soft:"#E4ECE9"},
+  {id:"warm",name:"Warm Premium",cat:"std",desc:"Krem + sıcak kahve",layout:"editorial",bg:"#F3ECE0",fg:"#302820",accent:"#987357",soft:"#E7DAC9"},
+  {id:"commercial",name:"Commercial Pro",cat:"com",desc:"Ticari gayrimenkul",layout:"split",bg:"#F1F4F4",fg:"#172320",accent:"#16766C",soft:"#D8E5E1"},
+  {id:"industrial",name:"Industrial Dark",cat:"com",desc:"Depo/ofis/fabrika",layout:"hero",bg:"#202629",fg:"#FFFFFF",accent:"#9FB9B1",soft:"#E7EAEA"},
+  {id:"data",name:"Data Sheet",cat:"com",desc:"Rakam ve özellik odaklı",layout:"data",bg:"#FFFFFF",fg:"#1B2925",accent:"#2C6355",soft:"#E8F1EE"}
+];
 
-function heicMi(f){
-  return /image\/(heic|heif)/i.test(f.type) || /\.(heic|heif)$/i.test(f.name);
-}
-function betikYukle(src){
-  return new Promise((ok, hata) => {
-    const s = document.createElement('script');
-    s.src = src; s.onload = ok; s.onerror = hata;
-    document.head.appendChild(s);
-  });
-}
-async function heicCevir(f){
-  if(!heicHazir){
-    heicHazir = betikYukle('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js');
-  }
-  await heicHazir;
-  const blob = await heic2any({ blob:f, toType:'image/jpeg', quality:0.92 });
-  return Array.isArray(blob) ? blob[0] : blob;
-}
+let selected = "collection";
+let photos = [];
+let advisorPhoto = null;
+let brandLogo = null;
+let currentPage = 0;
 
-async function ekle(list){
-  const dizi = [...list];
-  if(dizi.some(heicMi)) $('birak').querySelector('b').textContent = 'HEIC dosyaları dönüştürülüyor…';
-  for(const f of dizi){
-    if(!f.type.startsWith('image/') && !heicMi(f)) continue;
-    try{
-      const kaynak = heicMi(f) ? await heicCevir(f) : f;
-      const bit = await createImageBitmap(kaynak, { imageOrientation:'from-image' });
-      foto.push({ ad:f.name, bit, cx:bit.width/2, cy:bit.height/2, zoom:1, isik:100, lekeler:[] });
-    }catch(err){ console.warn('Okunamadı:', f.name, err); }
-  }
-  $('birak').querySelector('b').textContent = 'Fotoğrafları buraya bırakın';
-  if(foto.length){
-    if(aktif < 0) aktif = 0;
-    $('a-duzen').classList.remove('gizli');
-    $('a-indir').classList.remove('gizli');
-    seritCiz(); ciz(); ayarlariYukle();
-  }
+function tplMini(t){
+  const dark = ["hero"].includes(t.layout) && (t.bg.startsWith("#1") || t.bg.startsWith("#2"));
+  const p = document.createElement("button");
+  p.className = "tpl" + (t.id===selected ? " on" : "");
+  p.dataset.cat=t.cat;
+  p.innerHTML = `
+    <div class="tpl-preview" style="background:${t.bg}">
+      <div class="photo" style="left:${t.layout==="split"?"46%":"0"};top:${t.layout==="editorial"?"35%":"0"};opacity:.72"></div>
+      <div class="block" style="left:9px;right:${t.layout==="split"?"56%":"22px"};top:12px">
+        <div class="line" style="width:72%;background:${t.accent};margin-bottom:6px"></div>
+        <div class="line" style="width:92%;background:${dark?"#fff":t.fg};margin-bottom:5px"></div>
+        <div class="line" style="width:63%;background:${dark?"#ddd":"#8d9995"}"></div>
+      </div>
+    </div>
+    <div class="tpl-name">${t.name}</div>
+    <div class="tpl-desc">${t.desc}</div>`;
+  p.onclick=()=>{ selected=t.id; renderTemplates(); draw(); };
+  return p;
 }
 
-/* ---------- şerit ---------- */
-let surukle = null;
+function renderTemplates(filter="all"){
+  const box=$("templates"); box.innerHTML="";
+  TEMPLATES.filter(t=>filter==="all" || t.cat===filter).forEach(t=>box.appendChild(tplMini(t)));
+}
 
-function seritCiz(){
-  $('serit').innerHTML = '';
-  foto.forEach((f, i) => {
-    const d = document.createElement('div');
-    d.className = 'kucuk' + (i===aktif ? ' secili' : '');
-    d._f = f;
-    const c = document.createElement('canvas');
-    c.width = 78; c.height = 78;
-    const x = c.getContext('2d');
-    const s = Math.max(78/f.bit.width, 78/f.bit.height);
-    const w = f.bit.width*s, h = f.bit.height*s;
-    x.drawImage(f.bit, (78-w)/2, (78-h)/2, w, h);
-    const im = document.createElement('img'); im.src = c.toDataURL(); im.draggable = false;
-    d.appendChild(im);
-    const n = document.createElement('span'); n.className='no'; n.textContent = i+1;
-    d.appendChild(n);
-    if(f.lekeler.length){
-      const s2 = document.createElement('span'); s2.className='isaret'; s2.textContent='●';
-      d.appendChild(s2);
-    }
-    d.addEventListener('pointerdown', e => {
-      surukle = { el:d, x:e.clientX, tasindi:false };
-      d.setPointerCapture(e.pointerId);
-      d.classList.add('tasiniyor');
-    });
-    d.addEventListener('pointermove', e => {
-      if(!surukle || surukle.el !== d) return;
-      if(!surukle.tasindi && Math.abs(e.clientX - surukle.x) < 10) return;
-      surukle.tasindi = true;
-      const alt = document.elementFromPoint(e.clientX, e.clientY);
-      const hedef = alt && alt.closest ? alt.closest('.kucuk') : null;
-      if(hedef && hedef !== d && hedef.parentElement === d.parentElement){
-        const once = hedef.compareDocumentPosition(d) & Node.DOCUMENT_POSITION_FOLLOWING;
-        hedef.parentElement.insertBefore(d, once ? hedef : hedef.nextSibling);
-      }
-    });
-    d.addEventListener('pointerup', () => {
-      if(!surukle || surukle.el !== d) return;
-      d.classList.remove('tasiniyor');
-      if(surukle.tasindi){
-        const eskiAktif = aktif >= 0 ? foto[aktif] : null;
-        const yeni = [...$('serit').children].map(el => el._f);
-        foto.length = 0; foto.push(...yeni);
-        aktif = eskiAktif ? foto.indexOf(eskiAktif) : -1;
-        seritCiz();
-      } else {
-        aktif = foto.indexOf(d._f);
-        seritCiz(); ciz(); ayarlariYukle();
-      }
-      surukle = null;
-    });
-    d.addEventListener('pointercancel', () => {
-      d.classList.remove('tasiniyor'); surukle = null; seritCiz();
-    });
-    $('serit').appendChild(d);
+document.querySelectorAll(".mini-toggle button").forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll(".mini-toggle button").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on"); renderTemplates(b.dataset.filter);
+  };
+});
+
+function readImage(file){
+  return new Promise((resolve,reject)=>{
+    const r=new FileReader();
+    r.onload=()=>{ const im=new Image(); im.onload=()=>resolve(im); im.onerror=reject; im.src=r.result; };
+    r.onerror=reject; r.readAsDataURL(file);
   });
 }
 
-function ayarlariYukle(){
-  if(aktif < 0) return;
-  $('zoom').value = Math.round(foto[aktif].zoom*100);
-  $('isik').value = foto[aktif].isik;
-}
-
-/* ---------- kadraj hesabı ---------- */
-function oranDeger(f){
-  const v = parseFloat($('oran').value);
-  return v > 0 ? v : f.bit.width / f.bit.height;
-}
-function kadraj(f){
-  const ar = oranDeger(f), W = f.bit.width, H = f.bit.height;
-  const mw = Math.min(W, H*ar), mh = mw/ar;
-  const cw = mw/f.zoom, ch = mh/f.zoom;
-  const x = Math.min(Math.max(f.cx - cw/2, 0), W - cw);
-  const y = Math.min(Math.max(f.cy - ch/2, 0), H - ch);
-  return { x, y, w:cw, h:ch };
-}
-function filtre(f){
-  if(f.isik <= 100) return 'none';
-  const kontrast = 100 + (f.isik-100)*0.18;
-  return 'brightness(' + f.isik + '%) contrast(' + kontrast.toFixed(1) + '%)';
-}
-
-/* ---------- önizleme ---------- */
-let olcek = 1;
-function ciz(){
-  if(aktif < 0) return;
-  const f = foto[aktif], c = $('tuval'), g = c.getContext('2d');
-  const en = Math.min(c.parentElement.clientWidth - 32, 680);
-  olcek = en / f.bit.width;
-  c.width = en; c.height = Math.round(f.bit.height * olcek);
-  g.clearRect(0,0,c.width,c.height);
-  g.filter = filtre(f);
-  g.drawImage(f.bit, 0, 0, c.width, c.height);
-  g.filter = 'none';
-
-  if(f.lekeler.length){
-    const b = document.createElement('canvas');
-    b.width = c.width; b.height = c.height;
-    const bg = b.getContext('2d');
-    bg.filter = 'blur(' + Math.max(6, c.width*0.022) + 'px) ' + (filtre(f)==='none'?'':filtre(f));
-    bg.drawImage(f.bit, 0, 0, b.width, b.height);
-    g.save();
-    g.beginPath();
-    f.lekeler.forEach(l => {
-      if(l.t === 'c'){ g.moveTo((l.x+l.r)*olcek, l.y*olcek); g.arc(l.x*olcek, l.y*olcek, l.r*olcek, 0, 7); }
-      else g.rect(l.x*olcek, l.y*olcek, l.w*olcek, l.h*olcek);
-    });
-    g.clip();
-    g.drawImage(b, 0, 0);
-    g.restore();
-  }
-
-  const k = kadraj(f);
-  g.fillStyle = 'rgba(34,48,44,.55)';
-  g.fillRect(0, 0, c.width, k.y*olcek);
-  g.fillRect(0, (k.y+k.h)*olcek, c.width, c.height);
-  g.fillRect(0, k.y*olcek, k.x*olcek, k.h*olcek);
-  g.fillRect((k.x+k.w)*olcek, k.y*olcek, c.width, k.h*olcek);
-  g.strokeStyle = '#fff'; g.lineWidth = 2;
-  g.strokeRect(k.x*olcek+1, k.y*olcek+1, k.w*olcek-2, k.h*olcek-2);
-}
-window.addEventListener('resize', ciz);
-$('oran').addEventListener('change', ciz);
-$('zoom').addEventListener('input', e => {
-  if(aktif<0) return;
-  foto[aktif].zoom = e.target.value/100; ciz();
+$("fotolar").addEventListener("change", async e=>{
+  const list=[...e.target.files].slice(0,12);
+  for(const f of list){ try{ photos.push(await readImage(f)); }catch{} }
+  renderThumbs(); draw();
 });
-$('isik').addEventListener('input', e => {
-  if(aktif<0) return;
-  foto[aktif].isik = parseInt(e.target.value); ciz();
-});
+$("danismanFoto").addEventListener("change", async e=>{ if(e.target.files[0]) advisorPhoto=await readImage(e.target.files[0]); draw(); });
+$("logo").addEventListener("change", async e=>{ if(e.target.files[0]) brandLogo=await readImage(e.target.files[0]); draw(); });
 
-/* ---------- fare / parmak ---------- */
-let basili = false, sonX = 0, sonY = 0;
-const tuval = $('tuval');
-tuval.addEventListener('pointerdown', e => {
-  if(aktif<0) return;
-  basili = true; tuval.setPointerCapture(e.pointerId);
-  const p = nokta(e); sonX = p.x; sonY = p.y;
-  if(mod === 'bulanik'){ yeniGrup(foto[aktif]); leke(p); }
-});
-tuval.addEventListener('pointermove', e => {
-  if(!basili || aktif<0) return;
-  const p = nokta(e), f = foto[aktif];
-  if(mod === 'bulanik'){ leke(p); }
-  else {
-    f.cx += (p.x - sonX); f.cy += (p.y - sonY);
-    const k = kadraj(f);
-    f.cx = k.x + k.w/2; f.cy = k.y + k.h/2;
-  }
-  sonX = p.x; sonY = p.y;
-  ciz();
-});
-tuval.addEventListener('pointerup', () => { basili = false; seritCiz(); });
-tuval.addEventListener('pointercancel', () => { basili = false; });
-
-function nokta(e){
-  const r = tuval.getBoundingClientRect();
-  return { x:(e.clientX-r.left)/olcek * (tuval.width/r.width), y:(e.clientY-r.top)/olcek * (tuval.height/r.height) };
-}
-function yeniGrup(f){
-  f.sonGrup = (f.sonGrup || 0) + 1;
-  return f.sonGrup;
-}
-function leke(p){
-  const f = foto[aktif];
-  const r = Math.max(f.bit.width, f.bit.height)*0.035;
-  const s = f.lekeler[f.lekeler.length-1];
-  if(s && s.t === 'c' && s.g === f.sonGrup){
-    const d = Math.hypot(p.x - s.x, p.y - s.y);
-    if(d < r*0.4) return;
-  }
-  f.lekeler.push({ t:'c', g:f.sonGrup, x:p.x, y:p.y, r });
-}
-
-$('m-kadraj').addEventListener('click', () => setMod('kadraj'));
-$('m-bulanik').addEventListener('click', () => setMod('bulanik'));
-function setMod(m){
-  mod = m;
-  $('m-kadraj').classList.toggle('aktif', m==='kadraj');
-  $('m-bulanik').classList.toggle('aktif', m==='bulanik');
-  $('ipuc').textContent = m==='bulanik'
-    ? 'Kapatmak istediğiniz yerin üstünden parmağınızı geçirin. Kadraja dönmek için "Kadrajı kaydır"a basın.'
-    : 'Parmağınızı sürükleyerek kadrajı kaydırın. Bulanıklaştırmak için önce "Bulanıklaştır" düğmesine basın.';
-}
-$('b-geri').addEventListener('click', () => {
-  if(aktif<0) return;
-  const f = foto[aktif];
-  if(!f.lekeler.length) return;
-  const son = f.lekeler[f.lekeler.length-1].g;
-  while(f.lekeler.length && f.lekeler[f.lekeler.length-1].g === son) f.lekeler.pop();
-  ciz(); seritCiz();
-});
-
-/* ---------- ayarı hepsine uygula ---------- */
-$('b-hepsi').addEventListener('click', () => {
-  if(aktif < 0 || foto.length < 2) return;
-  const k = foto[aktif];
-  const ox = k.cx / k.bit.width, oy = k.cy / k.bit.height, z = k.zoom, isik = k.isik;
-  foto.forEach((f, i) => {
-    if(i === aktif) return;
-    f.cx = ox * f.bit.width; f.cy = oy * f.bit.height; f.zoom = z; f.isik = isik;
-    const kk = kadraj(f);
-    f.cx = kk.x + kk.w/2; f.cy = kk.y + kk.h/2;
+function renderThumbs(){
+  const box=$("thumbs"); box.innerHTML="";
+  photos.forEach((im,i)=>{
+    const d=document.createElement("div"); d.className="thumb";
+    const image=document.createElement("img"); image.src=im.src;
+    const del=document.createElement("button"); del.textContent="×";
+    del.onclick=()=>{ photos.splice(i,1); renderThumbs(); draw(); };
+    d.append(image,del); box.appendChild(d);
   });
-  const b = $('b-hepsi');
-  b.textContent = (foto.length-1) + ' fotoğrafa uygulandı';
-  setTimeout(() => { b.textContent = 'Ayarı hepsine uygula'; }, 2200);
+}
+
+["ilanTuru","portfoyTipi","baslik","lokasyon","fiyat","brut","net","oda","kisa","ozellikler",
+ "danisman","unvan","telefon","instagram","format"].forEach(id=>{
+  $(id).addEventListener("input", ()=>{ currentPage=0; syncPages(); draw(); });
 });
 
-/* ---------- otomatik yüz ---------- */
-$('b-yuz').addEventListener('click', async () => {
-  if(aktif<0) return;
-  const b = $('b-yuz'); b.disabled = true; b.textContent = 'Aranıyor…';
+$("yenile").onclick=()=>{ syncPages(); draw(); };
+$("indir").onclick=()=>downloadCurrent();
+$("indirTum").onclick=()=>downloadAll();
+
+function fmt(){
+  const v=$("format").value;
+  if(v==="story") return {w:1080,h:1920,pages:1};
+  if(v==="square") return {w:1080,h:1080,pages:1};
+  if(v==="post") return {w:1080,h:1350,pages:1};
+  return {w:1080,h:1350,pages:5};
+}
+function syncPages(){
+  const f=fmt();
+  currentPage=Math.min(currentPage,f.pages-1);
+  const tabs=$("pageTabs"); tabs.innerHTML="";
+  for(let i=0;i<f.pages;i++){
+    const b=document.createElement("button"); b.textContent=f.pages===1?"Önizleme":`${i+1}/${f.pages}`;
+    b.className=i===currentPage?"on":"";
+    b.onclick=()=>{currentPage=i; syncPages(); draw();}; tabs.appendChild(b);
+  }
+  const cv=$("cv"); cv.width=f.w; cv.height=f.h;
+}
+function info(){
+  return {
+    tur:$("ilanTuru").value,tip:$("portfoyTipi").value,baslik:$("baslik").value.trim(),
+    lokasyon:$("lokasyon").value.trim(),fiyat:$("fiyat").value.trim(),brut:$("brut").value.trim(),
+    net:$("net").value.trim(),oda:$("oda").value.trim(),kisa:$("kisa").value.trim(),
+    oz:$("ozellikler").value.split("\n").map(x=>x.trim()).filter(Boolean),
+    dan:$("danisman").value.trim(),unvan:$("unvan").value.trim(),tel:$("telefon").value.trim(),
+    ig:$("instagram").value.trim()
+  };
+}
+function tpl(){ return TEMPLATES.find(t=>t.id===selected) || TEMPLATES[0]; }
+
+function roundRect(ctx,x,y,w,h,r){
+  const rr=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);
+  ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath();
+}
+function cover(ctx,im,x,y,w,h){
+  if(!im){ ctx.fillStyle="#DDE4E1";ctx.fillRect(x,y,w,h); return; }
+  const s=Math.max(w/im.width,h/im.height),iw=im.width*s,ih=im.height*s;
+  ctx.drawImage(im,x+(w-iw)/2,y+(h-ih)/2,iw,ih);
+}
+function fitText(ctx,text,maxWidth,size,min=24,weight=800,family="Arial, Helvetica, sans-serif"){
+  let s=size; do{ctx.font=`${weight} ${s}px ${family}`; if(ctx.measureText(text).width<=maxWidth)break;s-=2;}while(s>min);return s;
+}
+function lines(ctx,text,maxWidth){
+  const words=(text||"").split(/\s+/), out=[];let line="";
+  for(const w of words){const test=line?line+" "+w:w;if(ctx.measureText(test).width>maxWidth && line){out.push(line);line=w}else line=test}
+  if(line)out.push(line);return out;
+}
+function textBlock(ctx,text,x,y,maxWidth,size,lineH,color,weight=700,family="Arial, Helvetica, sans-serif",maxLines=4){
+  ctx.fillStyle=color;ctx.font=`${weight} ${size}px ${family}`;ctx.textBaseline="top";
+  const tum=lines(ctx,text,maxWidth);
+  const ls=tum.slice(0,maxLines);
+  if(tum.length>ls.length) kesik=true;          // sigmayan satir var, kullaniciya haber ver
+  ls.forEach((l,i)=>ctx.fillText(l,x,y+i*lineH)); return y+ls.length*lineH;
+}
+function pill(ctx,text,x,y,bg,fg,size=28,padX=20,padY=11){
+  ctx.font=`700 ${size}px Arial, Helvetica, sans-serif`;const w=ctx.measureText(text).width+padX*2,h=size+padY*2;
+  ctx.fillStyle=bg;roundRect(ctx,x,y,w,h,h/2);ctx.fill();ctx.fillStyle=fg;ctx.textBaseline="top";ctx.fillText(text,x+padX,y+padY-1);return w;
+}
+function logoDraw(ctx,t,x,y,w=160){
+  if(brandLogo){ const h=w*(brandLogo.height/brandLogo.width); ctx.drawImage(brandLogo,x,y,w,h); return; }
+  ctx.fillStyle=t.fg;ctx.font="800 34px Arial, Helvetica, sans-serif";ctx.fillText("PORTFÖY",x,y);
+}
+function iconFact(ctx,label,value,x,y,t){
+  ctx.fillStyle=t.soft;roundRect(ctx,x,y,205,105,18);ctx.fill();
+  ctx.fillStyle=t.fg;ctx.font="700 24px Arial, Helvetica, sans-serif";ctx.fillText(label,x+18,y+20);
+  ctx.fillStyle=t.accent;ctx.font="800 30px Arial, Helvetica, sans-serif";ctx.fillText(value||"—",x+18,y+54);
+}
+function footer(ctx,t,d,W,H){
+  ctx.fillStyle=t.bg;ctx.globalAlpha=.94;ctx.fillRect(0,H-92,W,92);ctx.globalAlpha=1;
+  ctx.fillStyle=t.fg;ctx.font="700 26px Arial, Helvetica, sans-serif";ctx.fillText(d.lokasyon||"Portföy sunumu",54,H-57);
+  ctx.textAlign="right";ctx.fillStyle=t.accent;ctx.fillText("ilanfotosu.com",W-54,H-57);ctx.textAlign="left";
+}
+function pageNo(ctx,t,n,W){ctx.fillStyle=t.accent;ctx.font="700 24px Arial, Helvetica, sans-serif";ctx.textAlign="right";ctx.fillText(`${n}/5`,W-42,36);ctx.textAlign="left";}
+
+let kesik=false;
+
+function draw(){
+  kesik=false;
+  cizSayfa();
+  tasmaUyari();
+}
+
+function tasmaUyari(){
+  const kutu=$("tasma");
+  const d=info();
+  const fazlaOzellik = d.oz.length > 6;
+  if(!kesik && !fazlaOzellik){ kutu.style.display="none"; return; }
+  const sebep=[];
+  if(kesik) sebep.push("bazı yazılar görsele sığmadığı için kısaltıldı");
+  if(fazlaOzellik) sebep.push(`${d.oz.length} özellik yazdınız, görselde ilk 6 tanesi görünüyor`);
+  kutu.textContent = "Dikkat: " + sebep.join("; ") + ". Başlığı ya da açıklamayı kısaltırsanız tamamı görünür.";
+  kutu.style.display="block";
+}
+
+function cizSayfa(){
+  const cv=$("cv"),ctx=cv.getContext("2d"),F=fmt(),W=F.w,H=F.h,t=tpl(),d=info();
+  ctx.clearRect(0,0,W,H);ctx.fillStyle=t.bg;ctx.fillRect(0,0,W,H);
+  if(F.pages===1){ drawSingle(ctx,t,d,W,H); return; }
+  if(currentPage===0) coverPage(ctx,t,d,W,H);
+  if(currentPage===1) livingPage(ctx,t,d,W,H);
+  if(currentPage===2) featuresPage(ctx,t,d,W,H);
+  if(currentPage===3) locationPage(ctx,t,d,W,H);
+  if(currentPage===4) advisorPage(ctx,t,d,W,H);
+}
+
+function drawSingle(ctx,t,d,W,H){
+  const story=H>1500;   // Story'de ust 250px ve alt 340px Instagram arayuzunun altinda kalir
+  const img=photos[0];cover(ctx,img,0,0,W,H);
+  const grad=ctx.createLinearGradient(0,H*.25,0,H);grad.addColorStop(0,"rgba(0,0,0,0)");grad.addColorStop(1,"rgba(0,0,0,.78)");
+  ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle="#fff";ctx.font="800 34px Arial, Helvetica, sans-serif";ctx.fillText(`${d.tur.toUpperCase()} · ${d.tip.toUpperCase()}`,58,story?285:80);
+  textBlock(ctx,d.baslik,58,story?375:155,W-116,story?78:66,story?90:76,"#fff",850,"Georgia, 'Times New Roman', serif",3);
+  if(d.fiyat) pill(ctx,d.fiyat,58,story?680:395,"rgba(255,255,255,.94)","#15231f",30);
+  const y=H-(story?560:270);
+  iconFact(ctx,"Brüt",d.brut,58,y,{...t,soft:"rgba(255,255,255,.92)",fg:"#15231f",accent:t.accent});
+  iconFact(ctx,"Net",d.net,281,y,{...t,soft:"rgba(255,255,255,.92)",fg:"#15231f",accent:t.accent});
+  iconFact(ctx,"Oda",d.oda,504,y,{...t,soft:"rgba(255,255,255,.92)",fg:"#15231f",accent:t.accent});
+  ctx.fillStyle="#fff";ctx.font="700 26px Arial, Helvetica, sans-serif";ctx.fillText(d.lokasyon,58,H-(story?400:72));
+}
+
+/* ---------------------------------------------------------------
+   YENİ ŞABLON EKLEMEK
+   1) Renk teması yeterliyse: TEMPLATES dizisine tek bir obje ekleyin.
+      {id, name, cat, desc, layout, bg, fg, accent, soft}
+      layout alanı aşağıdaki LAYOUTS kayıtlarından birinin adıdır.
+   2) Yepyeni bir kapak yerleşimi istiyorsanız: LAYOUTS içine
+      ad: (ctx,t,d,W,H) => {...} şeklinde bir fonksiyon ekleyin,
+      sonra şablon objesinde layout olarak o adı yazın.
+   Başka hiçbir yeri değiştirmeniz gerekmez.
+---------------------------------------------------------------- */
+const LAYOUTS = {
+  split(ctx,t,d,W,H){
+    cover(ctx,photos[0],W*.46,0,W*.54,H-92);
+    ctx.fillStyle=t.bg;ctx.fillRect(0,0,W*.48,H-92);
+    logoDraw(ctx,t,54,55,180);
+    pill(ctx,`${d.tur.toUpperCase()} · ${d.tip.toUpperCase()}`,54,150,t.soft,t.fg,24);
+    textBlock(ctx,d.baslik,54,230,W*.38,72,82,t.fg,850,"Georgia, 'Times New Roman', serif",4);
+    if(d.fiyat) textBlock(ctx,d.fiyat,54,585,W*.36,42,50,t.accent,800,"Arial, Helvetica, sans-serif",2);
+    iconFact(ctx,"Brüt",d.brut,54,720,t);iconFact(ctx,"Net",d.net,54,845,t);iconFact(ctx,"Oda",d.oda,54,970,t);
+  },
+  editorial(ctx,t,d,W,H){
+    ctx.fillStyle=t.bg;ctx.fillRect(0,0,W,H);
+    cover(ctx,photos[0],60,360,W-120,H-520);
+    logoDraw(ctx,t,60,55,180);
+    textBlock(ctx,d.baslik,60,145,W-120,68,77,t.fg,800,"Georgia, 'Times New Roman', serif",3);
+    pill(ctx,`${d.tur.toUpperCase()} · ${d.tip.toUpperCase()}`,60,285,t.accent,"#fff",23);
+    if(d.fiyat) pill(ctx,d.fiyat,W-360,285,t.soft,t.fg,23);
+  },
+  frame(ctx,t,d,W,H){
+    ctx.fillStyle=t.bg;ctx.fillRect(0,0,W,H);
+    cover(ctx,photos[0],56,170,W-112,H-300);
+    ctx.strokeStyle=t.accent;ctx.lineWidth=5;ctx.strokeRect(38,150,W-76,H-260);
+    logoDraw(ctx,t,58,55,170);textBlock(ctx,d.baslik,86,H-360,W-172,62,70,"#fff",850,"Georgia, 'Times New Roman', serif",3);
+    ctx.fillStyle="rgba(0,0,0,.55)";ctx.fillRect(56,H-420,W-112,290);
+    if(d.fiyat) pill(ctx,d.fiyat,86,H-200,t.accent,"#fff",24);
+  },
+  hero(ctx,t,d,W,H){
+    cover(ctx,photos[0],0,0,W,H-92);
+    const grad=ctx.createLinearGradient(0,H*.2,0,H);grad.addColorStop(0,"rgba(0,0,0,.05)");grad.addColorStop(1,"rgba(0,0,0,.82)");
+    ctx.fillStyle=grad;ctx.fillRect(0,0,W,H-92);
+    logoDraw(ctx,{...t,fg:"#fff"},55,55,180);
+    textBlock(ctx,`${d.lokasyon}\n${d.baslik}`,55,H-510,W-110,70,78,"#fff",850,"Georgia, 'Times New Roman', serif",4);
+    let x=55; x+=pill(ctx,d.brut,x,H-230,"rgba(255,255,255,.94)","#15231f",25)+12;
+    x+=pill(ctx,d.net,x,H-230,"rgba(255,255,255,.94)","#15231f",25)+12;
+    pill(ctx,d.oda,x,H-230,t.accent,"#fff",25);
+    if(d.fiyat) textBlock(ctx,d.fiyat,55,H-145,W-110,37,45,"#fff",800,"Arial, Helvetica, sans-serif",1);
+  }
+};
+LAYOUTS.data = LAYOUTS.split;
+LAYOUTS.photo = LAYOUTS.hero;
+LAYOUTS.grid  = LAYOUTS.hero;
+
+function coverPage(ctx,t,d,W,H){
+  pageNo(ctx,t,1,W);
+  (LAYOUTS[t.layout] || LAYOUTS.hero)(ctx,t,d,W,H);
+  footer(ctx,t,d,W,H);
+}
+
+function livingPage(ctx,t,d,W,H){
+  pageNo(ctx,t,2,W);logoDraw(ctx,t,50,55,165);
+  textBlock(ctx,"YAŞAM ALANLARI",50,145,W-100,66,74,t.fg,800,"Georgia, 'Times New Roman', serif",2);
+  textBlock(ctx,"Portföyün yaşam hissini en güçlü fotoğraflarla anlatın.",50,245,W-100,28,38,t.fg,500,"Arial, Helvetica, sans-serif",2);
+  cover(ctx,photos[1]||photos[0],50,330,W-100,540);
+  cover(ctx,photos[2]||photos[0],50,895,(W-115)/2,280);
+  cover(ctx,photos[3]||photos[1]||photos[0],65+(W-115)/2,895,(W-115)/2,280);
+  ctx.fillStyle=t.accent;ctx.font="700 24px Arial, Helvetica, sans-serif";ctx.fillText(d.kisa||"Modern yaşam alanları",50,1215);
+  footer(ctx,t,d,W,H);
+}
+function featuresPage(ctx,t,d,W,H){
+  pageNo(ctx,t,3,W); cover(ctx,photos[4]||photos[0],0,0,W,H-92);
+  ctx.fillStyle="rgba(0,0,0,.42)";ctx.fillRect(0,0,W,H-92);
+  ctx.fillStyle="#fff";ctx.font="800 68px Georgia, 'Times New Roman', serif";ctx.fillText("ÖNE ÇIKAN",52,100);ctx.fillText("ÖZELLİKLER",52,178);
+  const items=(d.oz.length?d.oz:["Geniş teras","Doğal ışık","Otopark","Modern mimari"]).slice(0,6);
+  let y=300;items.forEach((v,i)=>{
+    ctx.fillStyle="rgba(16,43,37,.86)";roundRect(ctx,54,y,W-108,92,16);ctx.fill();
+    ctx.fillStyle=t.accent;ctx.beginPath();ctx.arc(92,y+46,17,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#fff";ctx.font="700 29px Arial, Helvetica, sans-serif";ctx.fillText(v,128,y+31);y+=108;
+  });
+  footer(ctx,{...t,bg:"#0f201c",fg:"#fff"},d,W,H);
+}
+function locationPage(ctx,t,d,W,H){
+  pageNo(ctx,t,4,W);ctx.fillStyle=t.bg;ctx.fillRect(0,0,W,H);
+  textBlock(ctx,"PRESTİJLİ LOKASYON",55,65,W-110,65,74,t.fg,800,"Georgia, 'Times New Roman', serif",2);
+  textBlock(ctx,d.lokasyon,55,230,W-110,32,42,t.accent,800,"Arial, Helvetica, sans-serif",2);
+  cover(ctx,photos[5]||photos[0],W*.43,300,W*.57,H-392);
+  const loc=["Doğayla iç içe","Ana yollara kolay ulaşım","Sosyal alanlara yakın","Günlük yaşama kolay erişim"];
+  let y=340;loc.forEach((v,i)=>{
+    ctx.fillStyle=t.soft;roundRect(ctx,55,y,W*.32,90,15);ctx.fill();
+    ctx.fillStyle=t.accent;ctx.beginPath();ctx.arc(90,y+45,13,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=t.fg;ctx.font="650 23px Arial, Helvetica, sans-serif";ctx.fillText(v,120,y+30);y+=110;
+  });
+  footer(ctx,t,d,W,H);
+}
+function advisorPage(ctx,t,d,W,H){
+  pageNo(ctx,t,5,W);
+  ctx.fillStyle=t.bg;ctx.fillRect(0,0,W,H);
+  if(advisorPhoto) cover(ctx,advisorPhoto,W*.53,0,W*.47,H-92);
+  else {ctx.fillStyle=t.soft;ctx.fillRect(W*.53,0,W*.47,H-92)}
+  logoDraw(ctx,t,55,55,190);
+  textBlock(ctx,"DETAYLI BİLGİ İÇİN İLETİŞİME GEÇİN",55,175,W*.42,51,61,t.fg,800,"Georgia, 'Times New Roman', serif",4);
+  ctx.fillStyle=t.accent;ctx.fillRect(55,450,110,5);
+  textBlock(ctx,d.dan||"Danışman Adı",55,510,W*.42,46,55,t.fg,800,"Georgia, 'Times New Roman', serif",2);
+  textBlock(ctx,d.unvan||"",55,620,W*.42,25,34,t.fg,500,"Arial, Helvetica, sans-serif",3);
+  pill(ctx,d.tel||"Telefon",55,755,t.accent,"#fff",25);
+  if(d.ig) textBlock(ctx,d.ig,55,845,W*.42,26,36,t.fg,700,"Arial, Helvetica, sans-serif",2);
+  textBlock(ctx,"Doğru gayrimenkul, doğru sunumla başlar.",55,1000,W*.42,34,45,t.accent,700,"Georgia, 'Times New Roman', serif",3);
+  footer(ctx,t,d,W,H);
+}
+
+function tuvalBlob(){
+  return new Promise(r => $("cv").toBlob(r, "image/png"));
+}
+function indirBlob(blob, ad){
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download=ad;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+}
+function dosyaAdi(){
+  const b=(info().baslik||"portfoy").toLowerCase()
+    .replace(/[^a-z0-9çğıöşü ]/gi,"").trim().replace(/\s+/g,"-").slice(0,40);
+  return b || "portfoy";
+}
+async function downloadCurrent(){
+  draw();
+  indirBlob(await tuvalBlob(), `${dosyaAdi()}-${currentPage+1}.png`);
+}
+async function downloadAll(){
+  const F=fmt(), old=currentPage, ad=dosyaAdi();
+  const b=$("indirTum"); b.disabled=true; const eski=b.textContent;
+  // Zip yerine tek tek PNG: telefonda zip acmak zor, gorseller dogrudan
+  // galeriye ya da indirilenler klasorune insin.
+  for(let i=0;i<F.pages;i++){
+    b.textContent=`${i+1}/${F.pages} indiriliyor`;
+    currentPage=i; syncPages(); draw();
+    await new Promise(r=>setTimeout(r,80));
+    indirBlob(await tuvalBlob(), `${ad}-${i+1}.png`);
+    await new Promise(r=>setTimeout(r,500));
+  }
+  currentPage=old; syncPages(); draw();
+  b.textContent=eski; b.disabled=false;
+}
+
+/* Danisman bilgileri her seferinde yeniden yazilmasin diye
+   yalnizca bu cihazin tarayicisinda saklanir, hicbir yere gonderilmez. */
+const HATIRLA=["danisman","unvan","telefon","instagram"];
+function bilgiYukle(){
   try{
-    if(!dedektor){
-      const m = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14');
-      const fs = await m.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
-      dedektor = await m.FaceDetector.createFromOptions(fs, {
-        baseOptions:{ modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite' },
-        runningMode:'IMAGE', minDetectionConfidence:0.35
-      });
-    }
-    const f = foto[aktif];
-    const c = document.createElement('canvas');
-    c.width = f.bit.width; c.height = f.bit.height;
-    c.getContext('2d').drawImage(f.bit, 0, 0);
-    const r = dedektor.detect(c);
-    const bulunan = r.detections || [];
-    bulunan.forEach(d => {
-      const bb = d.boundingBox;
-      const pay = Math.max(bb.width, bb.height) * 0.25;
-      f.lekeler.push({ t:'r', g:yeniGrup(f), x:bb.originX-pay, y:bb.originY-pay, w:bb.width+pay*2, h:bb.height+pay*2 });
-    });
-    ciz(); seritCiz();
-    b.textContent = bulunan.length ? bulunan.length + ' yüz bulundu' : 'Yüz bulunamadı';
-  }catch(err){
-    console.warn(err);
-    b.textContent = 'Otomatik arama açılmadı';
-    $('ipuc').textContent = 'Otomatik yüz araması bu cihazda çalışmadı. "Bulanıklaştır" moduyla elle kapatabilirsiniz.';
-  }
-  setTimeout(()=>{ b.textContent='Yüzleri bul'; b.disabled=false; }, 2500);
-});
-
-/* ---------- otomatik plaka ---------- */
-function plakaAday(bit){
-  const en = 800;
-  const s = Math.min(1, en / bit.width);
-  const W = Math.round(bit.width*s), H = Math.round(bit.height*s);
-  const c = document.createElement('canvas'); c.width = W; c.height = H;
-  const g = c.getContext('2d', { willReadFrequently:true });
-  g.drawImage(bit, 0, 0, W, H);
-  const d = g.getImageData(0, 0, W, H).data;
-
-  const N = W*H;
-  const gri = new Uint8Array(N), doygunluk = new Uint8Array(N), mavi = new Uint8Array(N);
-  for(let i=0, p=0; p<N; i+=4, p++){
-    const r=d[i], y2=d[i+1], b=d[i+2];
-    gri[p] = (r*0.299 + y2*0.587 + b*0.114) | 0;
-    const mx = Math.max(r,y2,b), mn = Math.min(r,y2,b);
-    doygunluk[p] = mx - mn;
-    mavi[p] = (b > 60 && b-r > 30 && b-y2 > 15) ? 1 : 0;
-  }
-
-  const etiket = new Int32Array(N);
-  const yigin = new Int32Array(N);
-  const parlak = new Uint8Array(N);
-  const hepsi = [];
-
-  // Farkli parlaklik esikleriyle birden fazla tarama: golgeli ve acili plakalar
-  // tek esikte kaciyor, bu yuzden dort gecis yapip sonuclari birlestiriyoruz.
-  const esikler = [205, 178, 152, 128];
-  for(let e=0; e<esikler.length; e++){
-    const esik = esikler[e];
-    const dogSiniri = esik < 160 ? 85 : 70;
-    for(let p=0; p<N; p++) parlak[p] = (gri[p] > esik && doygunluk[p] < dogSiniri) ? 1 : 0;
-    etiket.fill(-1);
-    let id = 0;
-    for(let p0=0; p0<N; p0++){
-      if(!parlak[p0] || etiket[p0] >= 0) continue;
-      let n = 0; yigin[n++] = p0; etiket[p0] = id;
-      let x0 = p0%W, x1 = x0, y0 = (p0/W)|0, y1 = y0, adet = 0;
-      while(n > 0){
-        const q = yigin[--n]; adet++;
-        const qx = q%W, qy = (q/W)|0;
-        if(qx<x0) x0=qx; if(qx>x1) x1=qx;
-        if(qy<y0) y0=qy; if(qy>y1) y1=qy;
-        if(qx>0   && parlak[q-1] && etiket[q-1]<0){ etiket[q-1]=id; yigin[n++]=q-1; }
-        if(qx<W-1 && parlak[q+1] && etiket[q+1]<0){ etiket[q+1]=id; yigin[n++]=q+1; }
-        if(qy>0   && parlak[q-W] && etiket[q-W]<0){ etiket[q-W]=id; yigin[n++]=q-W; }
-        if(qy<H-1 && parlak[q+W] && etiket[q+W]<0){ etiket[q+W]=id; yigin[n++]=q+W; }
-      }
-      id++;
-
-      const w = x1-x0+1, h = y1-y0+1;
-      if(h < 7 || w < 18 || w > W*0.62) continue;
-      const ar = w/h;
-      if(ar < 1.7 || ar > 8) continue;
-      if(adet/(w*h) < 0.2) continue;
-
-      let kenar = 0, say = 0;
-      for(let y=y0+1; y<y1; y++){
-        for(let x=x0+1; x<x1; x++){
-          const p = y*W+x;
-          if(Math.abs(gri[p]-gri[p-1]) > 32) kenar++;
-          say++;
-        }
-      }
-      if(!say) continue;
-      const yogunluk = kenar/say;
-      if(yogunluk < 0.045) continue;
-
-      let m = 0, mt = 0;
-      const bant = Math.max(1, Math.round(w*0.16));
-      for(let y=y0; y<=y1; y++)
-        for(let x=x0; x<x0+bant; x++){ m += mavi[y*W+x]; mt++; }
-      const maviOran = mt ? m/mt : 0;
-
-      // 4.5:1 civari Turk plakasi oranina yakinlik puani
-      const oranPuani = 1 - Math.min(1, Math.abs(ar-4.5)/3.5);
-
-      hepsi.push({
-        x:x0/s, y:y0/s, w:w/s, h:h/s,
-        puan: yogunluk*2 + oranPuani*0.6 + (maviOran > 0.12 ? 0.8 : 0)
-      });
-    }
-  }
-
-  // Ayni plakayi farkli esiklerde birden fazla bulduysak tekini birak
-  hepsi.sort((a,b) => b.puan - a.puan);
-  const secilen = [];
-  for(const k of hepsi){
-    const cakisiyor = secilen.some(v => {
-      const gx = Math.max(0, Math.min(k.x+k.w, v.x+v.w) - Math.max(k.x, v.x));
-      const gy = Math.max(0, Math.min(k.y+k.h, v.y+v.h) - Math.max(k.y, v.y));
-      const kesisim = gx*gy;
-      return kesisim > 0.25 * Math.min(k.w*k.h, v.w*v.h);
-    });
-    if(!cakisiyor) secilen.push(k);
-    if(secilen.length >= 6) break;
-  }
-  return secilen;
+    const v=JSON.parse(localStorage.getItem("sunum-danisman")||"{}");
+    HATIRLA.forEach(k=>{ if(v[k]) $(k).value=v[k]; });
+  }catch(e){}
 }
-
-$('b-plaka').addEventListener('click', () => {
-  if(aktif < 0) return;
-  const b = $('b-plaka'); b.disabled = true; b.textContent = 'Aranıyor…';
-  setTimeout(() => {
-    const f = foto[aktif];
-    let bulunan = [];
-    try{ bulunan = plakaAday(f.bit); }catch(err){ console.warn(err); }
-    bulunan.forEach(p => {
-      const pay = p.h * 0.35;
-      f.lekeler.push({ t:'r', g:yeniGrup(f), x:p.x-pay, y:p.y-pay, w:p.w+pay*2, h:p.h+pay*2 });
-    });
-    ciz(); seritCiz();
-    b.textContent = bulunan.length ? bulunan.length + ' aday işaretlendi' : 'Plaka bulunamadı';
-    if(!bulunan.length) $('ipuc').textContent = 'Plaka bulunamadı. "Bulanıklaştır" moduyla elle kapatabilirsiniz.';
-    setTimeout(() => { b.textContent = 'Plakaları bul'; b.disabled = false; }, 2500);
-  }, 30);
-});
-
-/* ---------- üretim ---------- */
-async function uret(f){
-  const k = kadraj(f);
-  const uzun = parseInt($('kenar').value);
-  const s = uzun / Math.max(k.w, k.h);
-  const W = Math.round(k.w*s), H = Math.round(k.h*s);
-
-  const c = document.createElement('canvas'); c.width = W; c.height = H;
-  const g = c.getContext('2d');
-  g.imageSmoothingQuality = 'high';
-  g.filter = filtre(f);
-  g.drawImage(f.bit, k.x, k.y, k.w, k.h, 0, 0, W, H);
-  g.filter = 'none';
-
-  if(f.lekeler.length){
-    const b = document.createElement('canvas'); b.width = W; b.height = H;
-    const bg = b.getContext('2d');
-    bg.filter = 'blur(' + Math.max(8, W*0.025) + 'px) ' + (filtre(f)==='none'?'':filtre(f));
-    bg.drawImage(f.bit, k.x, k.y, k.w, k.h, 0, 0, W, H);
-    g.save(); g.beginPath();
-    f.lekeler.forEach(l => {
-      if(l.t === 'c'){
-        const x=(l.x-k.x)*s, y=(l.y-k.y)*s, r=l.r*s;
-        g.moveTo(x+r, y); g.arc(x, y, r, 0, 7);
-      } else {
-        g.rect((l.x-k.x)*s, (l.y-k.y)*s, l.w*s, l.h*s);
-      }
-    });
-    g.clip(); g.drawImage(b, 0, 0); g.restore();
-  }
-
-  const hedef = parseInt($('hedef').value) * 1024;
-  let alt = 0.4, ust = 0.94, iyi = null;
-  for(let i=0; i<7; i++){
-    const q = (alt+ust)/2;
-    const blob = await new Promise(res => c.toBlob(res, 'image/jpeg', q));
-    if(blob.size > hedef){ ust = q; } else { iyi = blob; alt = q; }
-  }
-  return iyi || await new Promise(res => c.toBlob(res, 'image/jpeg', 0.4));
+function bilgiKaydet(){
+  try{
+    const v={}; HATIRLA.forEach(k=>v[k]=$(k).value);
+    localStorage.setItem("sunum-danisman", JSON.stringify(v));
+  }catch(e){}
 }
+HATIRLA.forEach(k=>$(k).addEventListener("input", bilgiKaydet));
 
-function onekAl(){
-  return ($('onek').value || 'ilan').trim().replace(/[^\wçğıöşüÇĞİÖŞÜ-]/g,'-');
-}
-async function hepsiniUret(){
-  const onek = onekAl(), cikti = [];
-  for(let i=0;i<foto.length;i++){
-    $('durum').textContent = (i+1) + ' / ' + foto.length + ' hazırlanıyor…';
-    const blob = await uret(foto[i]);
-    cikti.push({ ad: onek + '-' + String(i+1).padStart(2,'0') + '.jpg', blob });
-  }
-  return cikti;
-}
-
-$('b-indir').addEventListener('click', async () => {
-  if(!foto.length) return;
-  const b = $('b-indir'); b.disabled = true;
-  const cikti = await hepsiniUret();
-  $('durum').textContent = 'Zip paketleniyor…';
-  const zip = new JSZip();
-  cikti.forEach(x => zip.file(x.ad, x.blob));
-  const paket = await zip.generateAsync({type:'blob'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(paket);
-  a.download = onekAl() + '-fotograflar.zip';
-  a.click();
-  URL.revokeObjectURL(a.href);
-  $('durum').textContent = foto.length + ' fotoğraf indirildi.';
-  $('bitti').classList.remove('gizli');
-  b.disabled = false;
-});
-
-$('b-telefon').addEventListener('click', async () => {
-  if(!foto.length) return;
-  const b = $('b-telefon'); b.disabled = true;
-  const cikti = await hepsiniUret();
-  $('durum').textContent = 'Dosyalar indiriliyor…';
-  for(const x of cikti){
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(x.blob);
-    a.download = x.ad;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-    await new Promise(r => setTimeout(r, 400));
-  }
-  $('durum').textContent = cikti.length + ' fotoğraf indirildi.';
-  $('bitti').classList.remove('gizli');
-  b.disabled = false;
-});
+$("yil").textContent=new Date().getFullYear();
+$("yil").textContent=new Date().getFullYear();
+bilgiYukle();
+renderTemplates();syncPages();draw();
 </script>
 </body>
 </html>
